@@ -45,10 +45,10 @@ button {
 .landing-header {
   position: relative;
   width: 100%;
-  min-height: clamp(5rem, 18vw, 6.5rem);
+  min-height: clamp(5.5rem, 20vw, 7.25rem);
   display: grid;
   place-items: center;
-  padding: clamp(0.5rem, 2.5vw, 1rem) clamp(1rem, 4vw, 2rem);
+  padding: clamp(0.65rem, 3vw, 1.15rem) clamp(0.75rem, 3.5vw, 1.75rem);
   background: #ffffff;
 }
 
@@ -56,17 +56,17 @@ button {
 .landing-nav::after {
   content: '';
   position: absolute;
-  left: clamp(0.75rem, 4vw, 2rem);
-  right: clamp(0.75rem, 4vw, 2rem);
+  left: clamp(0.5rem, 2.5vw, 1.5rem);
+  right: clamp(0.5rem, 2.5vw, 1.5rem);
   bottom: 0;
-  height: 0.125rem;
+  height: clamp(0.125rem, 0.35vw, 0.1875rem);
   border-radius: 999px;
   background: #ffc400;
 }
 
 .landing-logo {
   display: block;
-  width: clamp(9.5rem, 48vw, 13.75rem);
+  width: clamp(10.5rem, 56vw, 15.5rem);
   max-width: 100%;
   height: auto;
   object-fit: contain;
@@ -75,14 +75,14 @@ button {
 .landing-nav {
   position: relative;
   width: 100%;
-  padding: clamp(0.5rem, 2vw, 0.875rem) clamp(0.5rem, 3vw, 1.5rem) clamp(0.75rem, 2.5vw, 1.125rem);
+  padding: clamp(0.65rem, 2.5vw, 1rem) clamp(0.4rem, 2vw, 1.25rem) clamp(0.9rem, 3.5vw, 1.35rem);
   background: #ffffff;
 }
 
 .category-row {
   display: grid;
   align-items: stretch;
-  justify-items: center;
+  justify-items: stretch;
 }
 
 .category-row-five {
@@ -90,60 +90,57 @@ button {
 }
 
 .category-row-four {
-  width: min(100%, 28rem);
+  width: 100%;
   margin-inline: auto;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.category-row + .category-row {
-  margin-top: clamp(0.75rem, 3vw, 1.25rem);
+  margin-top: clamp(0.9rem, 3.5vw, 1.4rem);
 }
 
 .landing-nav a {
   width: 100%;
   min-width: 0;
-  min-height: clamp(3.5rem, 12vw, 4.25rem);
+  min-height: clamp(4rem, 15vw, 5.25rem);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(0.25rem, 1vw, 0.4rem);
-  padding: clamp(0.25rem, 1vw, 0.4rem) clamp(0.05rem, 0.5vw, 0.3rem);
+  gap: clamp(0.35rem, 1.5vw, 0.6rem);
+  padding: clamp(0.35rem, 1.5vw, 0.65rem) clamp(0.05rem, 0.8vw, 0.4rem);
   color: #111111;
   text-decoration: none;
-  font-size: clamp(0.68rem, 2.8vw, 0.875rem);
-  font-weight: 500;
-  line-height: 1.05;
+  font-size: clamp(0.78rem, 3.2vw, 0.98rem);
+  font-weight: 600;
+  line-height: 1.1;
   text-align: center;
   white-space: nowrap;
 }
 
 .category-icon {
-  width: clamp(1.65rem, 7vw, 2rem);
-  height: clamp(1.65rem, 7vw, 2rem);
+  width: clamp(1.8rem, 8vw, 2.25rem);
+  height: clamp(1.8rem, 8vw, 2.25rem);
   display: grid;
   place-items: center;
-  font-size: clamp(1.3rem, 5.8vw, 1.6rem);
+  font-size: clamp(1.6rem, 7.5vw, 2.05rem);
   line-height: 1;
 }
 
 .poster-section {
   width: 100%;
-  padding: clamp(1rem, 4vw, 1.75rem) clamp(0.5rem, 3vw, 1.5rem) clamp(1rem, 4vw, 2rem);
+  padding: clamp(1.15rem, 4vw, 1.75rem) clamp(0.35rem, 1.75vw, 1rem) clamp(1rem, 4vw, 2rem);
   background: #ffffff;
 }
 
 .carousel-shell {
-  width: min(100%, 42rem);
+  width: min(100%, 50rem);
   margin-inline: auto;
   display: grid;
-  grid-template-columns: clamp(1.5rem, 7vw, 2.75rem) minmax(0, 1fr) clamp(1.5rem, 7vw, 2.75rem);
+  grid-template-columns: clamp(2rem, 8vw, 3.25rem) minmax(0, 1fr) clamp(2rem, 8vw, 3.25rem);
   align-items: center;
-  column-gap: clamp(0.2rem, 1.5vw, 0.75rem);
+  column-gap: clamp(0.1rem, 0.8vw, 0.45rem);
 }
 
 .poster-viewport {
-  width: min(100%, 28rem);
+  width: min(100%, 30rem);
   justify-self: center;
   min-width: 0;
   overflow: hidden;
@@ -166,7 +163,7 @@ button {
   flex: 0 0 100%;
   width: 100%;
   aspect-ratio: 3 / 5;
-  border: clamp(0.2rem, 1vw, 0.35rem) solid #ffffff;
+  border: clamp(0.2rem, 0.9vw, 0.35rem) solid #ffffff;
   border-radius: clamp(1rem, 4vw, 1.5rem);
   background: #ffc400;
   box-shadow: 0 0.0625rem 0 rgba(0, 0, 0, 0.08), 0 0 0 0.0625rem #eeeeee;
@@ -176,7 +173,7 @@ button {
 .poster-arrow {
   width: 100%;
   min-width: 0;
-  min-height: clamp(3.5rem, 16vw, 5rem);
+  min-height: clamp(3.75rem, 17vw, 5.5rem);
   display: grid;
   place-items: center;
   margin: 0;
@@ -185,7 +182,7 @@ button {
   background: transparent;
   color: #111111;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: clamp(2.5rem, 11vw, 4rem);
+  font-size: clamp(2.5rem, 12vw, 4.25rem);
   font-weight: 700;
   line-height: 1;
   cursor: pointer;
