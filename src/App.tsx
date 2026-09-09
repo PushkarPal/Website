@@ -41,8 +41,8 @@ function App() {
 
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setPosition((current) => current + 1)
       setIsTransitioning(true)
+      setPosition((current) => current + 1)
     }, 3000)
 
     return () => window.clearInterval(timer)
