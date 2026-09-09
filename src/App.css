@@ -35,7 +35,7 @@ button {
 
 .landing-page {
   width: 100%;
-  max-width: 42rem;
+  max-width: none;
   min-height: 100dvh;
   margin-inline: auto;
   padding-bottom: env(safe-area-inset-bottom);
@@ -203,6 +203,10 @@ button {
 }
 
 @media (min-width: 48rem) {
+  .landing-page {
+    max-width: 42rem;
+  }
+
   .landing-header {
     padding-inline: 20px;
   }
