@@ -31,3 +31,10 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Validate rendered layout
         run: npx playwright test
+      - name: Upload rendered screenshots
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: rendered-layout-screenshots
+          path: test-results/**/*.png
+          if-no-files-found: warn
