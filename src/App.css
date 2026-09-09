@@ -140,26 +140,25 @@ button {
   background: #ffffff;
 }
 
-/*
-  The carousel intentionally escapes any desktop content cap so the poster
-  always receives the real mobile viewport width. This is scoped to the
-  carousel only and leaves the solved .landing-page width rule unchanged.
-*/
+/* The poster width is explicitly derived from the viewport rather than from
+   a generic 100%-wide child. The arrows receive only their required space. */
 .carousel-shell {
+  --poster-width: min(76vw, 560px);
   position: relative;
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
-  padding-inline: clamp(10px, 3vw, 18px);
+  padding-inline: clamp(8px, 2.5vw, 16px);
   display: grid;
-  grid-template-columns: clamp(30px, 8vw, 42px) minmax(0, 1fr) clamp(30px, 8vw, 42px);
+  grid-template-columns: auto var(--poster-width) auto;
   align-items: center;
+  justify-content: center;
   column-gap: clamp(3px, 0.9vw, 7px);
 }
 
 .poster-viewport {
-  width: 100%;
-  max-width: none;
+  width: var(--poster-width);
+  max-width: 100%;
   min-width: 0;
   justify-self: center;
   overflow: hidden;
@@ -190,7 +189,7 @@ button {
 }
 
 .poster-arrow {
-  width: 100%;
+  width: clamp(24px, 7vw, 42px);
   height: clamp(52px, 14vw, 72px);
   display: grid;
   place-items: center;
