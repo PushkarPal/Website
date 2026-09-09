@@ -92,9 +92,6 @@ button {
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
-/* A dedicated separator preserves the visual relationship between the two
-   category groups without making the second grid row itself responsible for
-   the line, its spacing, and its content height. */
 .category-separator {
   width: 100%;
   height: 2px;
@@ -107,9 +104,6 @@ button {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-/* Each category is a compact composition: icon → intentional gap → text.
-   The row height is therefore created by the content rather than by an
-   artificial minimum height. */
 .landing-nav a {
   width: 100%;
   min-width: 0;
@@ -154,8 +148,9 @@ button {
   background: #ffffff;
 }
 
-/* The poster width is explicitly derived from the viewport rather than from
-   a generic 100%-wide child. The arrows receive only their required space. */
+/* Width model: viewport → landing page → poster section → full-viewport shell
+   → explicit poster allocation. The shell is intentionally viewport-based so
+   its arrow/poster allocation is independent of parent content width. */
 .carousel-shell {
   --poster-width: min(76vw, 560px);
   position: relative;
@@ -224,10 +219,6 @@ button {
 }
 
 @media (min-width: 48rem) {
-  .landing-page {
-    max-width: 42rem;
-  }
-
   .landing-header {
     padding-inline: 20px;
   }
