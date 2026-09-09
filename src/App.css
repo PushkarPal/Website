@@ -92,16 +92,24 @@ button {
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
-.category-row-four {
+/* A dedicated separator preserves the visual relationship between the two
+   category groups without making the second grid row itself responsible for
+   the line, its spacing, and its content height. */
+.category-separator {
   width: 100%;
-  margin-top: clamp(6px, 1.8vw, 10px);
-  padding-top: clamp(8px, 2.4vw, 13px);
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  border-top: 2px solid #ffc400;
+  height: 2px;
+  margin: clamp(5px, 1.5vw, 8px) 0 clamp(6px, 1.8vw, 10px);
+  border-radius: 999px;
+  background: #ffc400;
 }
 
-/* Keep each category cell driven by the icon/text composition itself.
-   This prevents oversized empty row heights from swallowing the visual hierarchy. */
+.category-row-four {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* Each category is a compact composition: icon → intentional gap → text.
+   The row height is therefore created by the content rather than by an
+   artificial minimum height. */
 .landing-nav a {
   width: 100%;
   min-width: 0;
@@ -111,7 +119,7 @@ button {
   align-items: center;
   justify-content: center;
   gap: clamp(4px, 1.4vw, 7px);
-  padding: clamp(8px, 2vw, 10px) 2px;
+  padding: clamp(6px, 1.6vw, 9px) 2px;
   color: #111111;
   text-decoration: none;
   font-size: clamp(14px, 3.9vw, 17px);
