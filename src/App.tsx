@@ -1,4 +1,5 @@
-import { TouchEvent, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import type { TouchEvent } from 'react'
 import './App.css'
 
 type Category = {
@@ -84,67 +85,37 @@ function App() {
     else previousPoster()
   }
 
-  const activePoster = ((position - 1 + posters.length) % posters.length) + 1
-
   return (
     <div className="landing-page">
       <header className="landing-header">
-        <img
-          className="landing-logo"
-          src={`${import.meta.env.BASE_URL}logo.svg`}
-          alt="Biggies Burger"
-        />
+        <img className="landing-logo" src={`${import.meta.env.BASE_URL}logo.svg`} alt="Biggies Burger" />
       </header>
 
       <nav className="landing-nav" aria-label="Menu categories">
         <div className="category-row category-row-five">
-          {firstRow.map((category) => (
-            <CategoryLink key={category.target} category={category} />
-          ))}
+          {firstRow.map((category) => <CategoryLink key={category.target} category={category} />)}
         </div>
         <div className="category-row category-row-four">
-          {secondRow.map((category) => (
-            <CategoryLink key={category.target} category={category} />
-          ))}
+          {secondRow.map((category) => <CategoryLink key={category.target} category={category} />)}
         </div>
       </nav>
 
-      <section className="poster-section" aria-label={`Promotional poster ${activePoster} of 5`}>
-        <button
-          className="poster-arrow poster-arrow-left"
-          onClick={previousPoster}
-          aria-label="Previous poster"
-        >
-          ‹
-        </button>
+      <section className="poster-section" aria-label="Promotional posters">
+        <button className="poster-arrow poster-arrow-left" onClick={previousPoster} aria-label="Previous poster">‹</button>
 
-        <div
-          className="poster-viewport"
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-        >
+        <div className="poster-viewport" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
           <div
             className={`poster-track${isTransitioning ? '' : ' no-transition'}`}
             style={{ transform: `translateX(calc(-${position} * (var(--poster-width) + var(--poster-gap))))` }}
             onTransitionEnd={handleTransitionEnd}
           >
             {carouselSlides.map((posterNumber, index) => (
-              <div
-                className="poster-box"
-                aria-hidden={index !== position}
-                key={`${posterNumber}-${index}`}
-              />
+              <div className="poster-box" aria-hidden={index !== position} key={`${posterNumber}-${index}`} />
             ))}
           </div>
         </div>
 
-        <button
-          className="poster-arrow poster-arrow-right"
-          onClick={nextPoster}
-          aria-label="Next poster"
-        >
-          ›
-        </button>
+        <button className="poster-arrow poster-arrow-right" onClick={nextPoster} aria-label="Next poster">›</button>
       </section>
     </div>
   )
