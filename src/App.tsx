@@ -30,7 +30,7 @@ function App() {
   return (
     <div className="landing-page">
       <header className="landing-header">
-        <img className="landing-logo" src="/logo.svg" alt="Biggies Burger" />
+        <img className="landing-logo" src="/Website/logo.svg" alt="Biggies Burger" />
       </header>
 
       <nav className="landing-nav" aria-label="Menu categories">
