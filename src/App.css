@@ -33,11 +33,14 @@ button {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Global page geometry: the landing page itself is anchored to the viewport,
+   not to a narrower centered application container. */
 .landing-page {
-  width: 100%;
+  width: 100vw;
   max-width: none;
   min-height: 100dvh;
-  margin-inline: auto;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
   padding-bottom: env(safe-area-inset-bottom);
   background: #ffffff;
 }
