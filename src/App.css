@@ -100,16 +100,18 @@ button {
   border-top: 2px solid #ffc400;
 }
 
+/* Keep each category cell driven by the icon/text composition itself.
+   This prevents oversized empty row heights from swallowing the visual hierarchy. */
 .landing-nav a {
   width: 100%;
   min-width: 0;
-  min-height: clamp(74px, 19vw, 90px);
+  min-height: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(5px, 1.5vw, 8px);
-  padding: clamp(5px, 1.3vw, 8px) 2px;
+  gap: clamp(4px, 1.4vw, 7px);
+  padding: clamp(8px, 2vw, 10px) 2px;
   color: #111111;
   text-decoration: none;
   font-size: clamp(14px, 3.9vw, 17px);
