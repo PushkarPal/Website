@@ -112,6 +112,9 @@ function App() {
         <div className="category-row category-row-five">
           {firstRow.map((category) => <CategoryLink key={category.target} category={category} />)}
         </div>
+
+        <div className="category-separator" aria-hidden="true" />
+
         <div className="category-row category-row-four">
           {secondRow.map((category) => <CategoryLink key={category.target} category={category} />)}
         </div>
