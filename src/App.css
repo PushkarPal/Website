@@ -75,7 +75,7 @@ button {
 .landing-nav {
   position: relative;
   width: 100%;
-  padding: clamp(0.65rem, 2.5vw, 1rem) clamp(0.4rem, 2vw, 1.25rem) clamp(0.9rem, 3.5vw, 1.35rem);
+  padding: clamp(0.75rem, 3vw, 1.1rem) clamp(0.35rem, 2vw, 1.25rem) clamp(1rem, 3.75vw, 1.45rem);
   background: #ffffff;
 }
 
@@ -93,22 +93,30 @@ button {
   width: 100%;
   margin-inline: auto;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin-top: clamp(0.9rem, 3.5vw, 1.4rem);
+  margin-top: clamp(0.75rem, 3.25vw, 1.35rem);
+}
+
+.category-separator {
+  width: 100%;
+  height: clamp(0.1rem, 0.3vw, 0.16rem);
+  margin-block: clamp(0.35rem, 1.5vw, 0.6rem) clamp(0.15rem, 0.8vw, 0.35rem);
+  border-radius: 999px;
+  background: #ffc400;
 }
 
 .landing-nav a {
   width: 100%;
   min-width: 0;
-  min-height: clamp(4rem, 15vw, 5.25rem);
+  min-height: clamp(4.25rem, 16vw, 5.5rem);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(0.35rem, 1.5vw, 0.6rem);
-  padding: clamp(0.35rem, 1.5vw, 0.65rem) clamp(0.05rem, 0.8vw, 0.4rem);
+  gap: clamp(0.45rem, 1.8vw, 0.7rem);
+  padding: clamp(0.4rem, 1.75vw, 0.7rem) clamp(0.05rem, 0.75vw, 0.4rem);
   color: #111111;
   text-decoration: none;
-  font-size: clamp(0.78rem, 3.2vw, 0.98rem);
+  font-size: clamp(0.8rem, 3.5vw, 0.98rem);
   font-weight: 600;
   line-height: 1.1;
   text-align: center;
@@ -116,31 +124,31 @@ button {
 }
 
 .category-icon {
-  width: clamp(1.8rem, 8vw, 2.25rem);
-  height: clamp(1.8rem, 8vw, 2.25rem);
+  width: clamp(1.8rem, 8.5vw, 2.2rem);
+  height: clamp(1.8rem, 8.5vw, 2.2rem);
   display: grid;
   place-items: center;
-  font-size: clamp(1.6rem, 7.5vw, 2.05rem);
+  font-size: clamp(1.65rem, 8vw, 2.1rem);
   line-height: 1;
 }
 
 .poster-section {
   width: 100%;
-  padding: clamp(1.15rem, 4vw, 1.75rem) clamp(0.35rem, 1.75vw, 1rem) clamp(1rem, 4vw, 2rem);
+  padding: clamp(1.1rem, 4vw, 1.75rem) clamp(0.2rem, 1vw, 0.65rem) clamp(1rem, 4vw, 2rem);
   background: #ffffff;
 }
 
 .carousel-shell {
-  width: min(100%, 50rem);
+  width: min(100%, 52rem);
   margin-inline: auto;
   display: grid;
-  grid-template-columns: clamp(2rem, 8vw, 3.25rem) minmax(0, 1fr) clamp(2rem, 8vw, 3.25rem);
+  grid-template-columns: clamp(1.65rem, 6vw, 3rem) minmax(0, 1fr) clamp(1.65rem, 6vw, 3rem);
   align-items: center;
-  column-gap: clamp(0.1rem, 0.8vw, 0.45rem);
+  column-gap: clamp(0.05rem, 0.5vw, 0.3rem);
 }
 
 .poster-viewport {
-  width: min(100%, 30rem);
+  width: min(100%, 32rem);
   justify-self: center;
   min-width: 0;
   overflow: hidden;
