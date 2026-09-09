@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { TouchEvent, useEffect, useRef, useState } from 'react'
 import './App.css'
 
 type Category = {
@@ -19,16 +19,11 @@ const secondRow: Category[] = [
   { label: 'Quick Bites', target: 'menu-quick', icon: '🍽️' },
   { label: 'Shakes', target: 'menu-shakes', icon: '🥤' },
   { label: 'Desert', target: 'menu-dessert', icon: '🍰' },
-  { label: 'Beverages', target: 'menu-beverages', icon: '🥤' },
+  { label: 'Beverages', target: 'menu-beverages', icon: '🧃' },
 ]
 
-const posters = [
-  { id: 1, image: null },
-  { id: 2, image: null },
-  { id: 3, image: null },
-  { id: 4, image: null },
-  { id: 5, image: null },
-]
+const posters = [1, 2, 3, 4, 5]
+const carouselSlides = [5, ...posters, 1]
 
 function CategoryLink({ category }: { category: Category }) {
   return (
@@ -40,25 +35,56 @@ function CategoryLink({ category }: { category: Category }) {
 }
 
 function App() {
-  const [posterIndex, setPosterIndex] = useState(0)
+  const [position, setPosition] = useState(1)
+  const [isTransitioning, setIsTransitioning] = useState(true)
+  const touchStartX = useRef<number | null>(null)
 
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setPosterIndex((current) => (current + 1) % posters.length)
+      setPosition((current) => current + 1)
+      setIsTransitioning(true)
     }, 3000)
 
     return () => window.clearInterval(timer)
   }, [])
 
-  const previousPoster = () => {
-    setPosterIndex((current) => (current - 1 + posters.length) % posters.length)
-  }
-
   const nextPoster = () => {
-    setPosterIndex((current) => (current + 1) % posters.length)
+    setIsTransitioning(true)
+    setPosition((current) => current + 1)
   }
 
-  const activePoster = posters[posterIndex]
+  const previousPoster = () => {
+    setIsTransitioning(true)
+    setPosition((current) => current - 1)
+  }
+
+  const handleTransitionEnd = () => {
+    if (position === carouselSlides.length - 1) {
+      setIsTransitioning(false)
+      setPosition(1)
+    } else if (position === 0) {
+      setIsTransitioning(false)
+      setPosition(posters.length)
+    }
+  }
+
+  const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+    touchStartX.current = event.touches[0]?.clientX ?? null
+  }
+
+  const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
+    if (touchStartX.current === null) return
+
+    const touchEndX = event.changedTouches[0]?.clientX ?? touchStartX.current
+    const distance = touchEndX - touchStartX.current
+    touchStartX.current = null
+
+    if (Math.abs(distance) < 45) return
+    if (distance < 0) nextPoster()
+    else previousPoster()
+  }
+
+  const activePoster = ((position - 1 + posters.length) % posters.length) + 1
 
   return (
     <div className="landing-page">
@@ -83,18 +109,40 @@ function App() {
         </div>
       </nav>
 
-      <section className="poster-section" aria-label="Promotional posters">
-        <button className="poster-arrow poster-arrow-left" onClick={previousPoster} aria-label="Previous poster">
+      <section className="poster-section" aria-label={`Promotional poster ${activePoster} of 5`}>
+        <button
+          className="poster-arrow poster-arrow-left"
+          onClick={previousPoster}
+          aria-label="Previous poster"
+        >
           ‹
         </button>
 
-        <div className="poster-box">
-          {activePoster.image ? (
-            <img src={activePoster.image} alt={`Biggies promotion ${activePoster.id}`} />
-          ) : null}
+        <div
+          className="poster-viewport"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          <div
+            className={`poster-track${isTransitioning ? '' : ' no-transition'}`}
+            style={{ transform: `translateX(calc(-${position} * (var(--poster-width) + var(--poster-gap))))` }}
+            onTransitionEnd={handleTransitionEnd}
+          >
+            {carouselSlides.map((posterNumber, index) => (
+              <div
+                className="poster-box"
+                aria-hidden={index !== position}
+                key={`${posterNumber}-${index}`}
+              />
+            ))}
+          </div>
         </div>
 
-        <button className="poster-arrow poster-arrow-right" onClick={nextPoster} aria-label="Next poster">
+        <button
+          className="poster-arrow poster-arrow-right"
+          onClick={nextPoster}
+          aria-label="Next poster"
+        >
           ›
         </button>
       </section>
