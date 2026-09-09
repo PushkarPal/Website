@@ -1,16 +1,25 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 
-const landingCategories = [
-  { label: 'Burger', target: 'menu-burger' },
-  { label: 'Wrap', target: 'menu-wrap' },
-  { label: 'Wings', target: 'menu-wings' },
-  { label: 'Fries', target: 'menu-fries' },
-  { label: 'Rice Bowls', target: 'menu-rice' },
-  { label: 'Quick Bites', target: 'menu-quick' },
-  { label: 'Shakes', target: 'menu-shakes' },
-  { label: 'Desert', target: 'menu-dessert' },
-  { label: 'Beverages', target: 'menu-beverages' },
+type Category = {
+  label: string
+  target: string
+  icon: string
+}
+
+const firstRow: Category[] = [
+  { label: 'Burger', target: 'menu-burger', icon: '🍔' },
+  { label: 'Wrap', target: 'menu-wrap', icon: '🌯' },
+  { label: 'Wings', target: 'menu-wings', icon: '🍗' },
+  { label: 'Fries', target: 'menu-fries', icon: '🍟' },
+  { label: 'Rice Bowls', target: 'menu-rice', icon: '🍚' },
+]
+
+const secondRow: Category[] = [
+  { label: 'Quick Bites', target: 'menu-quick', icon: '🍽️' },
+  { label: 'Shakes', target: 'menu-shakes', icon: '🥤' },
+  { label: 'Desert', target: 'menu-dessert', icon: '🍰' },
+  { label: 'Beverages', target: 'menu-beverages', icon: '🥤' },
 ]
 
 const posters = [
@@ -20,6 +29,15 @@ const posters = [
   { id: 4, image: null },
   { id: 5, image: null },
 ]
+
+function CategoryLink({ category }: { category: Category }) {
+  return (
+    <a href={`#${category.target}`}>
+      <span className="category-icon" aria-hidden="true">{category.icon}</span>
+      <span>{category.label}</span>
+    </a>
+  )
+}
 
 function App() {
   const [posterIndex, setPosterIndex] = useState(0)
@@ -53,20 +71,20 @@ function App() {
       </header>
 
       <nav className="landing-nav" aria-label="Menu categories">
-        {landingCategories.map((category) => (
-          <a key={category.target} href={`#${category.target}`}>
-            <span className={`category-icon category-icon-${category.target}`} aria-hidden="true" />
-            <span>{category.label}</span>
-          </a>
-        ))}
+        <div className="category-row category-row-five">
+          {firstRow.map((category) => (
+            <CategoryLink key={category.target} category={category} />
+          ))}
+        </div>
+        <div className="category-row category-row-four">
+          {secondRow.map((category) => (
+            <CategoryLink key={category.target} category={category} />
+          ))}
+        </div>
       </nav>
 
       <section className="poster-section" aria-label="Promotional posters">
-        <button
-          className="poster-arrow poster-arrow-left"
-          onClick={previousPoster}
-          aria-label="Previous poster"
-        >
+        <button className="poster-arrow poster-arrow-left" onClick={previousPoster} aria-label="Previous poster">
           ‹
         </button>
 
@@ -76,11 +94,7 @@ function App() {
           ) : null}
         </div>
 
-        <button
-          className="poster-arrow poster-arrow-right"
-          onClick={nextPoster}
-          aria-label="Next poster"
-        >
+        <button className="poster-arrow poster-arrow-right" onClick={nextPoster} aria-label="Next poster">
           ›
         </button>
       </section>
