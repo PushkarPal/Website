@@ -39,24 +39,39 @@ function App() {
   const [position, setPosition] = useState(1)
   const [isTransitioning, setIsTransitioning] = useState(true)
   const touchStartX = useRef<number | null>(null)
+  const autoplayTimer = useRef<number | null>(null)
 
-  useEffect(() => {
-    const timer = window.setInterval(() => {
+  const scheduleAutoplay = () => {
+    if (autoplayTimer.current !== null) {
+      window.clearTimeout(autoplayTimer.current)
+    }
+
+    autoplayTimer.current = window.setTimeout(() => {
       setIsTransitioning(true)
       setPosition((current) => current + 1)
     }, 3000)
+  }
 
-    return () => window.clearInterval(timer)
+  useEffect(() => {
+    scheduleAutoplay()
+
+    return () => {
+      if (autoplayTimer.current !== null) {
+        window.clearTimeout(autoplayTimer.current)
+      }
+    }
   }, [])
 
   const nextPoster = () => {
     setIsTransitioning(true)
     setPosition((current) => current + 1)
+    scheduleAutoplay()
   }
 
   const previousPoster = () => {
     setIsTransitioning(true)
     setPosition((current) => current - 1)
+    scheduleAutoplay()
   }
 
   const handleTransitionEnd = () => {
@@ -67,6 +82,8 @@ function App() {
       setIsTransitioning(false)
       setPosition(posters.length)
     }
+
+    scheduleAutoplay()
   }
 
   const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
@@ -101,21 +118,23 @@ function App() {
       </nav>
 
       <section className="poster-section" aria-label="Promotional posters">
-        <button className="poster-arrow poster-arrow-left" onClick={previousPoster} aria-label="Previous poster">‹</button>
+        <div className="carousel-shell">
+          <button className="poster-arrow poster-arrow-left" onClick={previousPoster} aria-label="Previous poster">‹</button>
 
-        <div className="poster-viewport" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
-          <div
-            className={`poster-track${isTransitioning ? '' : ' no-transition'}`}
-            style={{ transform: `translateX(calc(-${position} * (var(--poster-width) + var(--poster-gap))))` }}
-            onTransitionEnd={handleTransitionEnd}
-          >
-            {carouselSlides.map((posterNumber, index) => (
-              <div className="poster-box" aria-hidden={index !== position} key={`${posterNumber}-${index}`} />
-            ))}
+          <div className="poster-viewport" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+            <div
+              className={`poster-track${isTransitioning ? '' : ' no-transition'}`}
+              style={{ transform: `translateX(-${position * 100}%)` }}
+              onTransitionEnd={handleTransitionEnd}
+            >
+              {carouselSlides.map((posterNumber, index) => (
+                <div className="poster-box" aria-hidden={index !== position} key={`${posterNumber}-${index}`} />
+              ))}
+            </div>
           </div>
-        </div>
 
-        <button className="poster-arrow poster-arrow-right" onClick={nextPoster} aria-label="Next poster">›</button>
+          <button className="poster-arrow poster-arrow-right" onClick={nextPoster} aria-label="Next poster">›</button>
+        </div>
       </section>
     </div>
   )
