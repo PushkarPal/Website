@@ -13,56 +13,73 @@ const landingCategories = [
   { label: 'Beverages', target: 'menu-beverages' },
 ]
 
+const posters = [
+  { id: 1, image: null },
+  { id: 2, image: null },
+  { id: 3, image: null },
+  { id: 4, image: null },
+  { id: 5, image: null },
+]
+
 function App() {
   const [posterIndex, setPosterIndex] = useState(0)
 
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setPosterIndex((current) => (current + 1) % 5)
+      setPosterIndex((current) => (current + 1) % posters.length)
     }, 3000)
 
     return () => window.clearInterval(timer)
   }, [])
 
-  const previousPoster = () => setPosterIndex((current) => (current + 4) % 5)
-  const nextPoster = () => setPosterIndex((current) => (current + 1) % 5)
+  const previousPoster = () => {
+    setPosterIndex((current) => (current - 1 + posters.length) % posters.length)
+  }
+
+  const nextPoster = () => {
+    setPosterIndex((current) => (current + 1) % posters.length)
+  }
+
+  const activePoster = posters[posterIndex]
 
   return (
     <div className="landing-page">
       <header className="landing-header">
-        <img className="landing-logo" src={`${import.meta.env.BASE_URL}logo.svg`} alt="Biggies Burger" />
+        <img className="landing-logo" src={`${import.meta.env.BASE_URL}logo.png`} alt="Biggies Burger" />
       </header>
 
       <nav className="landing-nav" aria-label="Menu categories">
         {landingCategories.map((category) => (
           <a key={category.target} href={`#${category.target}`}>
-            {category.label}
+            <span className={`category-icon category-icon-${category.target}`} aria-hidden="true" />
+            <span>{category.label}</span>
           </a>
         ))}
       </nav>
 
-      <section className="poster-section" aria-label="Posters">
-        <button className="poster-arrow poster-arrow-left" onClick={previousPoster} aria-label="Previous poster">
+      <section className="poster-section" aria-label="Promotional posters">
+        <button
+          className="poster-arrow poster-arrow-left"
+          onClick={previousPoster}
+          aria-label="Previous poster"
+        >
           ‹
         </button>
+
         <div className="poster-box">
-          <span>POSTERS</span>
+          {activePoster.image ? (
+            <img src={activePoster.image} alt={`Biggies promotion ${activePoster.id}`} />
+          ) : null}
         </div>
-        <button className="poster-arrow poster-arrow-right" onClick={nextPoster} aria-label="Next poster">
+
+        <button
+          className="poster-arrow poster-arrow-right"
+          onClick={nextPoster}
+          aria-label="Next poster"
+        >
           ›
         </button>
       </section>
-
-      <div className="poster-dots" aria-label={`Poster ${posterIndex + 1} of 5`}>
-        {[0, 1, 2, 3, 4].map((index) => (
-          <button
-            key={index}
-            className={index === posterIndex ? 'active' : ''}
-            onClick={() => setPosterIndex(index)}
-            aria-label={`Show poster ${index + 1}`}
-          />
-        ))}
-      </div>
 
       <main className="landing-content">
         <div id="menu-burger" className="landing-anchor" />
