@@ -45,7 +45,11 @@ function App() {
   return (
     <div className="landing-page">
       <header className="landing-header">
-        <img className="landing-logo" src={`${import.meta.env.BASE_URL}logo.png`} alt="Biggies Burger" />
+        <img
+          className="landing-logo"
+          src={`${import.meta.env.BASE_URL}logo.svg`}
+          alt="Biggies Burger"
+        />
       </header>
 
       <nav className="landing-nav" aria-label="Menu categories">
@@ -80,18 +84,6 @@ function App() {
           ›
         </button>
       </section>
-
-      <main className="landing-content">
-        <div id="menu-burger" className="landing-anchor" />
-        <div id="menu-wrap" className="landing-anchor" />
-        <div id="menu-wings" className="landing-anchor" />
-        <div id="menu-fries" className="landing-anchor" />
-        <div id="menu-rice" className="landing-anchor" />
-        <div id="menu-quick" className="landing-anchor" />
-        <div id="menu-shakes" className="landing-anchor" />
-        <div id="menu-dessert" className="landing-anchor" />
-        <div id="menu-beverages" className="landing-anchor" />
-      </main>
     </div>
   )
 }
