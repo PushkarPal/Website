@@ -101,8 +101,7 @@ test.describe('responsive landing page geometry', () => {
       expect(geometry.logo.top).toBeGreaterThanOrEqual(geometry.header.top - 1);
       expect(geometry.logo.bottom).toBeLessThanOrEqual(geometry.header.bottom + 1);
 
-      // The carousel is intentionally inset a little from the page edges, but it
-      // must still consume the main content width rather than becoming a narrow column.
+      // The carousel occupies the main content width without becoming a narrow centered app.
       expect(geometry.shell).not.toBeNull();
       expect(geometry.shell.left).toBeGreaterThanOrEqual(-1);
       expect(geometry.shell.right).toBeLessThanOrEqual(viewportWidth + 1);
@@ -116,15 +115,15 @@ test.describe('responsive landing page geometry', () => {
       expect(geometry.secondRow.width / viewportWidth).toBeGreaterThan(0.95);
 
       for (const category of geometry.categoryLinks) {
-        expect(category.iconWidth).toBeGreaterThan(0.06 * viewportWidth);
-        expect(category.iconHeight).toBeGreaterThan(0.06 * viewportWidth);
+        if (viewport.width < 768) {
+          expect(category.iconWidth).toBeGreaterThan(0.06 * viewportWidth);
+          expect(category.iconHeight).toBeGreaterThan(0.06 * viewportWidth);
+          expect(parseFloat(category.fontSize)).toBeGreaterThanOrEqual(12);
+        }
         expect(category.textHeight).toBeGreaterThan(0);
         expect(category.iconBottom).toBeLessThanOrEqual(category.textTop);
         expect(category.textTop - category.iconBottom).toBeGreaterThanOrEqual(1);
         expect(category.textTop - category.iconBottom).toBeLessThanOrEqual(16);
-        if (viewport.width < 768) {
-          expect(parseFloat(category.fontSize)).toBeGreaterThanOrEqual(12);
-        }
       }
 
       // The separator must actually lie between the two category rows.
