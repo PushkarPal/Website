@@ -1,10 +1,15 @@
 import { test } from '@playwright/test';
 
 const viewports = [
+  { name: 'mobile-320', width: 320, height: 700 },
+  { name: 'mobile-360', width: 360, height: 780 },
   { name: 'mobile-375', width: 375, height: 812 },
   { name: 'mobile-390', width: 390, height: 844 },
   { name: 'mobile-412', width: 412, height: 915 },
   { name: 'mobile-430', width: 430, height: 932 },
+  { name: 'mobile-480', width: 480, height: 900 },
+  { name: 'mobile-600', width: 600, height: 960 },
+  { name: 'mobile-691', width: 691, height: 1000 },
   { name: 'desktop-1440', width: 1440, height: 900 },
 ];
 
@@ -40,81 +45,68 @@ test.describe('responsive geometry diagnostic', () => {
         const rectFor = (selector) => {
           const element = document.querySelector(selector);
           if (!element) return null;
-
           const box = element.getBoundingClientRect();
           return {
-            selector,
-            rect: {
-              x: box.x,
-              y: box.y,
-              left: box.left,
-              right: box.right,
-              top: box.top,
-              bottom: box.bottom,
-              width: box.width,
-              height: box.height,
-            },
-            display: getComputedStyle(element).display,
-            position: getComputedStyle(element).position,
-            width: getComputedStyle(element).width,
-            maxWidth: getComputedStyle(element).maxWidth,
-            minWidth: getComputedStyle(element).minWidth,
-            boxSizing: getComputedStyle(element).boxSizing,
-            paddingLeft: getComputedStyle(element).paddingLeft,
-            paddingRight: getComputedStyle(element).paddingRight,
-            marginLeft: getComputedStyle(element).marginLeft,
-            marginRight: getComputedStyle(element).marginRight,
+            left: box.left,
+            right: box.right,
+            top: box.top,
+            bottom: box.bottom,
+            width: box.width,
+            height: box.height,
           };
         };
 
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
-        const visualWidth = window.visualViewport?.width ?? null;
-        const visualHeight = window.visualViewport?.height ?? null;
-        const docWidth = document.documentElement.clientWidth;
-        const docHeight = document.documentElement.clientHeight;
-        const bodyWidth = document.body.clientWidth;
-        const bodyHeight = document.body.clientHeight;
-        const rootRect = document.querySelector('#root')?.getBoundingClientRect();
-        const landingRect = document.querySelector('.landing-page')?.getBoundingClientRect();
-        const navRect = document.querySelector('.landing-nav')?.getBoundingClientRect();
-        const shellRect = document.querySelector('.carousel-shell')?.getBoundingClientRect();
-        const posterRect = document.querySelector('.poster-viewport')?.getBoundingClientRect();
-        const leftArrow = document.querySelector('.poster-arrow-left')?.getBoundingClientRect();
-        const rightArrow = document.querySelector('.poster-arrow-right')?.getBoundingClientRect();
+        const poster = rectFor('.poster-viewport');
+        const shell = rectFor('.carousel-shell');
+        const leftArrow = rectFor('.poster-arrow-left');
+        const rightArrow = rectFor('.poster-arrow-right');
 
         return {
           viewport: {
             innerWidth: viewportWidth,
             innerHeight: viewportHeight,
             devicePixelRatio: window.devicePixelRatio,
-            visualViewport: { width: visualWidth, height: visualHeight },
+            visualViewportWidth: window.visualViewport?.width ?? null,
+            visualViewportHeight: window.visualViewport?.height ?? null,
           },
           document: {
-            clientWidth: docWidth,
-            clientHeight: docHeight,
-            bodyClientWidth: bodyWidth,
-            bodyClientHeight: bodyHeight,
+            clientWidth: document.documentElement.clientWidth,
+            clientHeight: document.documentElement.clientHeight,
+            bodyClientWidth: document.body.clientWidth,
+            bodyClientHeight: document.body.clientHeight,
             documentScrollWidth: document.documentElement.scrollWidth,
             bodyScrollWidth: document.body.scrollWidth,
           },
-          relationships: {
-            rootWidthRatio: rootRect ? rootRect.width / viewportWidth : null,
-            landingWidthRatio: landingRect ? landingRect.width / viewportWidth : null,
-            navWidthRatio: navRect ? navRect.width / viewportWidth : null,
-            shellWidthRatio: shellRect ? shellRect.width / viewportWidth : null,
-            posterWidthRatio: posterRect ? posterRect.width / viewportWidth : null,
-            posterLeftInset: posterRect?.left ?? null,
-            posterRightInset: posterRect ? viewportWidth - posterRect.right : null,
-            arrowLeftRightGap: posterRect && leftArrow ? posterRect.left - leftArrow.right : null,
-            arrowRightLeftGap: posterRect && rightArrow ? rightArrow.left - posterRect.right : null,
-          },
           elements: Object.fromEntries(requestedSelectors.map((selector) => [selector, rectFor(selector)])),
+          relationships: {
+            posterWidthRatio: poster.width / viewportWidth,
+            posterLeftInset: poster.left,
+            posterRightInset: viewportWidth - poster.right,
+            shellWidthRatio: shell.width / viewportWidth,
+            leftArrowRightGap: poster.left - leftArrow.right,
+            rightArrowLeftGap: rightArrow.left - poster.right,
+            trackWidth: rectFor('.poster-track').width,
+          },
         };
       }, selectors);
 
-      console.log(`\n=== RESPONSIVE DIAGNOSTIC: ${viewport.name} (${viewport.width}x${viewport.height}) ===`);
-      console.log(JSON.stringify(diagnostic, null, 2));
+      const e = diagnostic.elements;
+      console.log(`\n=== RESPONSIVE AUDIT: ${viewport.name} (${viewport.width}x${viewport.height}) ===`);
+      console.log(JSON.stringify({
+        viewport: diagnostic.viewport,
+        document: diagnostic.document,
+        carousel: {
+          shell: e['.carousel-shell'],
+          posterViewport: e['.poster-viewport'],
+          posterTrack: e['.poster-track'],
+          posterBox: e['.poster-box'],
+          leftArrow: e['.poster-arrow-left'],
+          rightArrow: e['.poster-arrow-right'],
+          relationships: diagnostic.relationships,
+        },
+      }, null, 2));
 
       await page.screenshot({ path: `test-results/diagnostic-${viewport.name}.png`, fullPage: true });
     });
