@@ -96,6 +96,50 @@ function App() {
     }
   }, [])
 
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('layout-debug') !== '1') return
+
+    const printDiagnostic = () => {
+      const selectors = [
+        '#root', '.landing-page', '.landing-header', '.landing-logo', '.landing-nav',
+        '.category-row-five', '.category-separator', '.category-row-four', '.poster-section',
+        '.carousel-shell', '.poster-arrow-left', '.poster-viewport', '.poster-track',
+        '.poster-box', '.poster-arrow-right',
+      ]
+
+      const round = (value: number) => Math.round(value * 100) / 100
+      const layout = Object.fromEntries(selectors.map((selector) => {
+        const element = document.querySelector<HTMLElement>(selector)
+        if (!element) return [selector, null]
+        const box = element.getBoundingClientRect()
+        return [selector, {
+          x: round(box.x), y: round(box.y), left: round(box.left), right: round(box.right),
+          width: round(box.width), height: round(box.height), bottom: round(box.bottom),
+        }]
+      }))
+
+      console.group('Biggies responsive layout diagnostic')
+      console.table({
+        innerWidth: window.innerWidth,
+        innerHeight: window.innerHeight,
+        devicePixelRatio: window.devicePixelRatio,
+        visualViewportWidth: window.visualViewport?.width ?? null,
+        visualViewportHeight: window.visualViewport?.height ?? null,
+        documentClientWidth: document.documentElement.clientWidth,
+        documentClientHeight: document.documentElement.clientHeight,
+        bodyClientWidth: document.body.clientWidth,
+        bodyClientHeight: document.body.clientHeight,
+        documentScrollWidth: document.documentElement.scrollWidth,
+        bodyScrollWidth: document.body.scrollWidth,
+      })
+      console.table(layout)
+      console.groupEnd()
+    }
+
+    const frame = window.requestAnimationFrame(printDiagnostic)
+    return () => window.cancelAnimationFrame(frame)
+  }, [])
+
   const nextPoster = () => {
     setIsTransitioning(true)
     setPosition((current) => current + 1)
@@ -165,7 +209,12 @@ function App() {
               onTransitionEnd={handleTransitionEnd}
             >
               {carouselSlides.map((posterNumber, index) => (
-                <div className="poster-box" aria-hidden={index !== position} key={`${posterNumber}-${index}`} />
+                <div
+                  className="poster-box"
+                  data-poster-number={posterNumber}
+                  aria-hidden={index !== position}
+                  key={`${posterNumber}-${index}`}
+                />
               ))}
             </div>
           </div>
