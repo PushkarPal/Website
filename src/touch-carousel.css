@@ -3,9 +3,12 @@
  * browser exposes a desktop-style CSS layout viewport (for example, when
  * Desktop site is enabled). The poster width is the remaining width after
  * explicit arrow lanes and gaps; it is never produced by a fixed poster cap.
+ *
+ * `body .carousel-shell` intentionally has higher specificity than the base
+ * desktop rule so this remains reliable regardless of CSS import ordering.
  */
 @media (pointer: coarse) and (hover: none) {
-  .carousel-shell {
+  body .carousel-shell {
     width: 100%;
     max-width: none;
     grid-template-columns: clamp(1.75rem, 7vw, 2.5rem) minmax(0, 1fr) clamp(1.75rem, 7vw, 2.5rem);
