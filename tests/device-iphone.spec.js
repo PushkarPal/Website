@@ -1,6 +1,8 @@
 import { test, expect, devices } from '@playwright/test';
 
-test.use({ ...devices['iPhone 13'] });
+// Keep the iPhone viewport, DPR, touch and user-agent characteristics while
+// using Chromium so CI only needs the browser it already installs.
+test.use({ ...devices['iPhone 13'], browserName: 'chromium' });
 
 test('iPhone-class layout keeps the carousel inside the visual viewport', async ({ page }) => {
   await page.goto('/', { waitUntil: 'networkidle' });
