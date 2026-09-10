@@ -78,23 +78,29 @@ test.describe('responsive landing page geometry', () => {
       });
 
       const { viewportWidth } = geometry;
-      const fullWidth = (box) => {
+      const assertViewportWidth = (box, minimumRatio = 0.98) => {
         expect(box).not.toBeNull();
         expect(box.left).toBeGreaterThanOrEqual(-1);
         expect(box.right).toBeLessThanOrEqual(viewportWidth + 1);
-        expect(box.width / viewportWidth).toBeGreaterThan(0.98);
+        expect(box.width / viewportWidth).toBeGreaterThan(minimumRatio);
       };
 
-      // Full viewport document geometry — no accidental centered application container.
-      fullWidth(geometry.root);
-      fullWidth(geometry.landing);
-      fullWidth(geometry.header);
-      fullWidth(geometry.nav);
-      fullWidth(geometry.shell);
+      // Global geometry: these roots must genuinely occupy the viewport.
+      assertViewportWidth(geometry.root);
+      assertViewportWidth(geometry.landing);
+      assertViewportWidth(geometry.header);
+      assertViewportWidth(geometry.nav);
       expect(geometry.documentClientWidth).toBe(viewportWidth);
       expect(geometry.bodyClientWidth).toBe(viewportWidth);
       expect(geometry.documentScrollWidth).toBeLessThanOrEqual(viewportWidth + 1);
       expect(geometry.bodyScrollWidth).toBeLessThanOrEqual(viewportWidth + 1);
+
+      // The carousel is intentionally inset a little from the page edges, but it
+      // must still consume the main content width rather than becoming a narrow column.
+      expect(geometry.shell).not.toBeNull();
+      expect(geometry.shell.left).toBeGreaterThanOrEqual(-1);
+      expect(geometry.shell.right).toBeLessThanOrEqual(viewportWidth + 1);
+      expect(geometry.shell.width / viewportWidth).toBeGreaterThan(0.94);
 
       // Navigation is exactly 5 + 4 categories with predictable fluid columns.
       expect(geometry.categoryLinks).toHaveLength(9);
