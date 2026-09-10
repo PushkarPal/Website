@@ -65,8 +65,8 @@ test.describe('responsive landing page geometry', () => {
             return {
               iconWidth: iconBox.width,
               iconHeight: iconBox.height,
+              iconBottom: iconBox.bottom,
               textTop: textBox.top,
-              textBottom: textBox.bottom,
               textHeight: textBox.height,
               fontSize: getComputedStyle(text).fontSize,
             };
@@ -85,7 +85,7 @@ test.describe('responsive landing page geometry', () => {
         expect(box.width / viewportWidth).toBeGreaterThan(0.98);
       };
 
-      // The document itself must remain full width: no hidden centered application container.
+      // Full viewport document geometry — no accidental centered application container.
       fullWidth(geometry.root);
       fullWidth(geometry.landing);
       fullWidth(geometry.header);
@@ -107,7 +107,12 @@ test.describe('responsive landing page geometry', () => {
         expect(category.iconWidth).toBeGreaterThan(0.06 * viewportWidth);
         expect(category.iconHeight).toBeGreaterThan(0.06 * viewportWidth);
         expect(category.textHeight).toBeGreaterThan(0);
-        expect(category.textTop - (category.textBottom - category.textHeight)).toBeGreaterThan(0);
+        expect(category.iconBottom).toBeLessThanOrEqual(category.textTop);
+        expect(category.textTop - category.iconBottom).toBeGreaterThanOrEqual(1);
+        expect(category.textTop - category.iconBottom).toBeLessThanOrEqual(16);
+        if (viewport.width < 768) {
+          expect(parseFloat(category.fontSize)).toBeGreaterThanOrEqual(12);
+        }
       }
 
       // The separator must actually lie between the two category rows.
@@ -116,28 +121,30 @@ test.describe('responsive landing page geometry', () => {
       expect(geometry.separator.top).toBeGreaterThanOrEqual(geometry.firstRow.bottom - 1);
       expect(geometry.separator.bottom).toBeLessThanOrEqual(geometry.secondRow.top + 1);
 
-      // Poster remains a large centered composition with external arrows.
+      // Poster is a large centered composition with externally positioned arrows.
       expect(geometry.poster.left).toBeGreaterThan(0);
       expect(geometry.poster.right).toBeLessThan(viewportWidth);
-      expect(geometry.poster.width / viewportWidth).toBeGreaterThan(0.70);
       if (viewport.width < 768) {
+        expect(geometry.poster.width / viewportWidth).toBeGreaterThan(0.72);
         expect(geometry.poster.width / viewportWidth).toBeLessThan(0.90);
+        expect(geometry.poster.top - geometry.nav.bottom).toBeGreaterThan(8);
+        expect(geometry.poster.top - geometry.nav.bottom).toBeLessThan(40);
       }
       expect(geometry.poster.height / geometry.poster.width).toBeGreaterThan(1.55);
       expect(geometry.poster.height / geometry.poster.width).toBeLessThan(1.75);
-      expect(geometry.poster.top - geometry.nav.bottom).toBeGreaterThan(8);
-      expect(geometry.poster.top - geometry.nav.bottom).toBeLessThan(40);
       expect(geometry.leftArrow.right).toBeLessThanOrEqual(geometry.poster.left + 12);
       expect(geometry.rightArrow.left).toBeGreaterThanOrEqual(geometry.poster.right - 12);
       expect(geometry.leftArrow.right).toBeLessThanOrEqual(geometry.poster.left);
       expect(geometry.rightArrow.left).toBeGreaterThanOrEqual(geometry.poster.right);
 
-      // There are exactly five logical posters; clones are implementation details for seamless looping.
+      // Five logical posters are represented; clones are implementation details for looping.
       expect(geometry.logicalPosterIds.sort()).toEqual(['1', '2', '3', '4', '5']);
 
       if (viewport.width < 768) {
         expect(geometry.header.height / viewport.height).toBeLessThan(0.18);
         expect(geometry.logo.width / viewportWidth).toBeGreaterThan(0.35);
+      } else {
+        expect(geometry.poster.width).toBeLessThanOrEqual(600);
       }
 
       await page.screenshot({
