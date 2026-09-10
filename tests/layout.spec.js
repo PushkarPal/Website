@@ -95,6 +95,12 @@ test.describe('responsive landing page geometry', () => {
       expect(geometry.documentScrollWidth).toBeLessThanOrEqual(viewportWidth + 1);
       expect(geometry.bodyScrollWidth).toBeLessThanOrEqual(viewportWidth + 1);
 
+      // The real logo must fit inside its header rather than being vertically clipped.
+      expect(geometry.logo.left).toBeGreaterThanOrEqual(geometry.header.left - 1);
+      expect(geometry.logo.right).toBeLessThanOrEqual(geometry.header.right + 1);
+      expect(geometry.logo.top).toBeGreaterThanOrEqual(geometry.header.top - 1);
+      expect(geometry.logo.bottom).toBeLessThanOrEqual(geometry.header.bottom + 1);
+
       // The carousel is intentionally inset a little from the page edges, but it
       // must still consume the main content width rather than becoming a narrow column.
       expect(geometry.shell).not.toBeNull();
