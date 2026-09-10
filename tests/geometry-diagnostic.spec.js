@@ -30,20 +30,6 @@ function round(value) {
   return Math.round(value * 100) / 100;
 }
 
-function rectData(box) {
-  if (!box) return null;
-  return {
-    x: round(box.x),
-    y: round(box.y),
-    left: round(box.left),
-    right: round(box.right),
-    top: round(box.top),
-    bottom: round(box.bottom),
-    width: round(box.width),
-    height: round(box.height),
-  };
-}
-
 test.describe('responsive geometry diagnostic', () => {
   for (const viewport of viewports) {
     test(`diagnose ${viewport.name}`, async ({ page }) => {
@@ -53,21 +39,21 @@ test.describe('responsive geometry diagnostic', () => {
       const diagnostic = await page.evaluate((requestedSelectors) => {
         const rectFor = (selector) => {
           const element = document.querySelector(selector);
-          return element ? {
+          if (!element) return null;
+
+          const box = element.getBoundingClientRect();
+          return {
             selector,
-            rect: (() => {
-              const box = element.getBoundingClientRect();
-              return {
-                x: box.x,
-                y: box.y,
-                left: box.left,
-                right: box.right,
-                top: box.top,
-                bottom: box.bottom,
-                width: box.width,
-                height: box.height,
-              };
-            })(),
+            rect: {
+              x: box.x,
+              y: box.y,
+              left: box.left,
+              right: box.right,
+              top: box.top,
+              bottom: box.bottom,
+              width: box.width,
+              height: box.height,
+            },
             display: getComputedStyle(element).display,
             position: getComputedStyle(element).position,
             width: getComputedStyle(element).width,
@@ -128,12 +114,7 @@ test.describe('responsive geometry diagnostic', () => {
       }, selectors);
 
       console.log(`\n=== RESPONSIVE DIAGNOSTIC: ${viewport.name} (${viewport.width}x${viewport.height}) ===`);
-      console.log(JSON.stringify({
-        viewport: diagnostic.viewport,
-        document: diagnostic.document,
-        relationships: diagnostic.relationships,
-        elements: diagnostic.elements,
-      }, null, 2));
+      console.log(JSON.stringify(diagnostic, null, 2));
 
       await page.screenshot({ path: `test-results/diagnostic-${viewport.name}.png`, fullPage: true });
     });
