@@ -33,20 +33,6 @@ const selectors = [
   '.poster-arrow-right',
 ];
 
-function rectFor(selector) {
-  const element = document.querySelector(selector);
-  if (!element) return null;
-  const box = element.getBoundingClientRect();
-  return {
-    left: box.left,
-    right: box.right,
-    top: box.top,
-    bottom: box.bottom,
-    width: box.width,
-    height: box.height,
-  };
-}
-
 test.describe('responsive landing page geometry', () => {
   for (const viewport of viewports) {
     test(`${viewport.name} preserves responsive geometry`, async ({ page }) => {
@@ -54,19 +40,31 @@ test.describe('responsive landing page geometry', () => {
       await page.goto('/', { waitUntil: 'networkidle' });
 
       const geometry = await page.evaluate((requestedSelectors) => {
+        const rectFor = (selector) => {
+          const element = document.querySelector(selector);
+          if (!element) return null;
+          const box = element.getBoundingClientRect();
+          return {
+            left: box.left,
+            right: box.right,
+            top: box.top,
+            bottom: box.bottom,
+            width: box.width,
+            height: box.height,
+          };
+        };
+
         const rowFive = document.querySelector('.category-row-five');
         const rowFour = document.querySelector('.category-row-four');
-        const poster = document.querySelector('.poster-viewport');
-        const shell = document.querySelector('.carousel-shell');
-        const leftArrow = document.querySelector('.poster-arrow-left');
-        const rightArrow = document.querySelector('.poster-arrow-right');
+        const posterRect = rectFor('.poster-viewport');
+        const shellRect = rectFor('.carousel-shell');
+        const leftArrowRect = rectFor('.poster-arrow-left');
+        const rightArrowRect = rectFor('.poster-arrow-right');
         const viewportWidth = window.innerWidth;
 
-        const elements = Object.fromEntries(requestedSelectors.map((selector) => [selector, rectFor(selector)]));
-        const posterRect = elements['.poster-viewport'];
-        const shellRect = elements['.carousel-shell'];
-        const leftArrowRect = elements['.poster-arrow-left'];
-        const rightArrowRect = elements['.poster-arrow-right'];
+        const elements = Object.fromEntries(
+          requestedSelectors.map((selector) => [selector, rectFor(selector)]),
+        );
 
         return {
           viewport: {
@@ -115,7 +113,9 @@ test.describe('responsive landing page geometry', () => {
             firstRowBottom: rowFive?.getBoundingClientRect().bottom ?? null,
             secondRowTop: rowFour?.getBoundingClientRect().top ?? null,
           },
-          logicalPosterIds: [...new Set([...document.querySelectorAll('[data-poster-number]')].map((item) => item.dataset.posterNumber))],
+          logicalPosterIds: [...new Set(
+            [...document.querySelectorAll('[data-poster-number]')].map((item) => item.dataset.posterNumber),
+          )],
         };
       }, selectors);
 
@@ -172,9 +172,10 @@ test.describe('responsive landing page geometry', () => {
       expect(geometry.carousel.leftArrowGap).toBeLessThanOrEqual(4);
       expect(geometry.carousel.rightArrowGap).toBeLessThanOrEqual(4);
 
-      // The track is allowed to be wider internally, but the viewport must clip it.
+      // The track itself remains the same width as the clipped viewport. Slides
+      // may be translated outside that viewport, but they cannot change document width.
       expect(geometry.carousel.trackWidth).toBeGreaterThanOrEqual(geometry.carousel.viewportWidth - widthTolerance);
-      expect(geometry.carousel.trackWidth).toBeLessThanOrEqual(geometry.carousel.viewportWidth * 1.01);
+      expect(geometry.carousel.trackWidth).toBeLessThanOrEqual(geometry.carousel.viewportWidth + widthTolerance);
 
       if (isMobile) {
         // Mobile is a deliberate composition: the poster remains large and scales
