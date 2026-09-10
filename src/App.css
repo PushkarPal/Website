@@ -43,8 +43,8 @@ button {
   background: #ffffff;
 }
 
-/* Header geometry is controlled by the logo's height so the real SVG cannot
-   overflow/clamp against a shorter header. */
+/* Header geometry is derived from the available block space so the real SVG
+   remains fully visible instead of overflowing its containing block. */
 .landing-header {
   position: relative;
   width: 100%;
@@ -150,6 +150,8 @@ button {
   background: #ffffff;
 }
 
+/* The shell is container-based: the arrows occupy only the side tracks and
+   the middle track receives the majority of the available width. */
 .carousel-shell {
   width: 100%;
   margin: 0;
@@ -235,7 +237,8 @@ button {
 
 @media (min-width: 48rem) {
   .landing-header {
-    height: clamp(7rem, 10vw, 8rem);
+    height: clamp(7.5rem, 10vw, 9rem);
+    padding-block: 0.5rem;
     padding-inline: 1.25rem;
   }
 
@@ -243,6 +246,7 @@ button {
     width: 13.5rem;
     height: auto;
     max-width: 100%;
+    max-height: 100%;
   }
 
   .landing-nav {
