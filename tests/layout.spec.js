@@ -3,80 +3,143 @@ import { test, expect } from '@playwright/test';
 const viewports = [
   { name: 'mobile-375', width: 375, height: 812 },
   { name: 'mobile-390', width: 390, height: 844 },
+  { name: 'mobile-412', width: 412, height: 915 },
   { name: 'mobile-430', width: 430, height: 932 },
-  { name: 'tablet-768', width: 768, height: 1024 },
+  { name: 'desktop-1440', width: 1440, height: 900 },
 ];
 
-test.describe('responsive landing page rendered validation', () => {
+test.describe('responsive landing page geometry', () => {
   for (const viewport of viewports) {
-    test(`${viewport.name} renders the intended composition`, async ({ page }) => {
+    test(`${viewport.name} preserves responsive geometry`, async ({ page }) => {
       await page.setViewportSize({ width: viewport.width, height: viewport.height });
       await page.goto('/', { waitUntil: 'networkidle' });
-      await page.waitForLoadState('domcontentloaded');
 
       const geometry = await page.evaluate(() => {
-        const root = document.documentElement;
-        const body = document.body;
         const rect = (selector) => {
           const element = document.querySelector(selector);
           if (!element) return null;
           const box = element.getBoundingClientRect();
-          return { left: box.left, right: box.right, top: box.top, bottom: box.bottom, width: box.width, height: box.height };
+          const style = getComputedStyle(element);
+          return {
+            left: box.left,
+            right: box.right,
+            top: box.top,
+            bottom: box.bottom,
+            width: box.width,
+            height: box.height,
+            fontSize: style.fontSize,
+          };
         };
 
-        const categories = [...document.querySelectorAll('.landing-nav a')].map((link) => {
-          const icon = link.querySelector('.category-icon');
-          const text = link.querySelector(':scope > span:last-child');
-          if (!icon || !text) return null;
-          const iconBox = icon.getBoundingClientRect();
-          const textBox = text.getBoundingClientRect();
-          return {
-            iconBottom: iconBox.bottom,
-            textTop: textBox.top,
-            iconHeight: iconBox.height,
-            textHeight: textBox.height,
-          };
-        });
+        const links = [...document.querySelectorAll('.landing-nav a')];
+        const rowFive = document.querySelector('.category-row-five');
+        const rowFour = document.querySelector('.category-row-four');
 
         return {
-          viewportWidth: root.clientWidth,
-          scrollWidth: Math.max(root.scrollWidth, body.scrollWidth),
+          viewportWidth: window.innerWidth,
+          viewportHeight: window.innerHeight,
+          visualViewportWidth: window.visualViewport?.width ?? null,
+          visualViewportHeight: window.visualViewport?.height ?? null,
+          documentClientWidth: document.documentElement.clientWidth,
+          bodyClientWidth: document.body.clientWidth,
+          documentScrollWidth: document.documentElement.scrollWidth,
+          bodyScrollWidth: document.body.scrollWidth,
+          root: rect('#root'),
           landing: rect('.landing-page'),
+          header: rect('.landing-header'),
+          logo: rect('.landing-logo'),
           nav: rect('.landing-nav'),
-          shell: rect('.carousel-shell'),
-          poster: rect('.poster-viewport'),
           firstRow: rect('.category-row-five'),
-          secondRow: rect('.category-row-four'),
           separator: rect('.category-separator'),
+          secondRow: rect('.category-row-four'),
+          posterSection: rect('.poster-section'),
+          shell: rect('.carousel-shell'),
           leftArrow: rect('.poster-arrow-left'),
+          poster: rect('.poster-viewport'),
           rightArrow: rect('.poster-arrow-right'),
-          categories,
+          categoryLinks: links.map((link) => {
+            const icon = link.querySelector('.category-icon');
+            const text = link.querySelector(':scope > span:last-child');
+            const iconBox = icon.getBoundingClientRect();
+            const textBox = text.getBoundingClientRect();
+            return {
+              iconWidth: iconBox.width,
+              iconHeight: iconBox.height,
+              textTop: textBox.top,
+              textBottom: textBox.bottom,
+              textHeight: textBox.height,
+              fontSize: getComputedStyle(text).fontSize,
+            };
+          }),
+          firstRowColumns: rowFive ? getComputedStyle(rowFive).gridTemplateColumns.split(' ').length : 0,
+          secondRowColumns: rowFour ? getComputedStyle(rowFour).gridTemplateColumns.split(' ').length : 0,
+          logicalPosterIds: [...new Set([...document.querySelectorAll('[data-poster-number]')].map((item) => item.dataset.posterNumber))],
         };
       });
 
-      // Hard layout constraints: the rendered page must fit the viewport.
-      expect(geometry.scrollWidth).toBeLessThanOrEqual(geometry.viewportWidth + 1);
-      for (const selector of ['landing', 'nav', 'shell', 'poster', 'firstRow', 'secondRow', 'separator', 'leftArrow', 'rightArrow']) {
-        expect(geometry[selector]).not.toBeNull();
-        expect(geometry[selector].left).toBeGreaterThanOrEqual(-1);
-        expect(geometry[selector].right).toBeLessThanOrEqual(geometry.viewportWidth + 1);
-      }
+      const { viewportWidth } = geometry;
+      const fullWidth = (box) => {
+        expect(box).not.toBeNull();
+        expect(box.left).toBeGreaterThanOrEqual(-1);
+        expect(box.right).toBeLessThanOrEqual(viewportWidth + 1);
+        expect(box.width / viewportWidth).toBeGreaterThan(0.98);
+      };
 
-      // Rendered composition constraints: every category has a real icon/text stack,
-      // and the icon is visibly separated from its label instead of relying on row height.
-      expect(geometry.categories).toHaveLength(9);
-      for (const category of geometry.categories) {
-        expect(category.iconHeight).toBeGreaterThan(0);
+      // The document itself must remain full width: no hidden centered application container.
+      fullWidth(geometry.root);
+      fullWidth(geometry.landing);
+      fullWidth(geometry.header);
+      fullWidth(geometry.nav);
+      fullWidth(geometry.shell);
+      expect(geometry.documentClientWidth).toBe(viewportWidth);
+      expect(geometry.bodyClientWidth).toBe(viewportWidth);
+      expect(geometry.documentScrollWidth).toBeLessThanOrEqual(viewportWidth + 1);
+      expect(geometry.bodyScrollWidth).toBeLessThanOrEqual(viewportWidth + 1);
+
+      // Navigation is exactly 5 + 4 categories with predictable fluid columns.
+      expect(geometry.categoryLinks).toHaveLength(9);
+      expect(geometry.firstRowColumns).toBe(5);
+      expect(geometry.secondRowColumns).toBe(4);
+      expect(geometry.firstRow.width / viewportWidth).toBeGreaterThan(0.95);
+      expect(geometry.secondRow.width / viewportWidth).toBeGreaterThan(0.95);
+
+      for (const category of geometry.categoryLinks) {
+        expect(category.iconWidth).toBeGreaterThan(0.06 * viewportWidth);
+        expect(category.iconHeight).toBeGreaterThan(0.06 * viewportWidth);
         expect(category.textHeight).toBeGreaterThan(0);
-        expect(category.textTop - category.iconBottom).toBeGreaterThanOrEqual(2);
-        expect(category.textTop - category.iconBottom).toBeLessThanOrEqual(16);
+        expect(category.textTop - (category.textBottom - category.textHeight)).toBeGreaterThan(0);
       }
 
-      // The dedicated separator must sit between the two rendered category rows.
+      // The separator must actually lie between the two category rows.
+      expect(geometry.separator.left).toBeGreaterThanOrEqual(geometry.firstRow.left - 1);
+      expect(geometry.separator.right).toBeLessThanOrEqual(geometry.firstRow.right + 1);
       expect(geometry.separator.top).toBeGreaterThanOrEqual(geometry.firstRow.bottom - 1);
       expect(geometry.separator.bottom).toBeLessThanOrEqual(geometry.secondRow.top + 1);
 
-      // Capture the actual rendered page for human visual inspection in CI artifacts.
+      // Poster remains a large centered composition with external arrows.
+      expect(geometry.poster.left).toBeGreaterThan(0);
+      expect(geometry.poster.right).toBeLessThan(viewportWidth);
+      expect(geometry.poster.width / viewportWidth).toBeGreaterThan(0.70);
+      if (viewport.width < 768) {
+        expect(geometry.poster.width / viewportWidth).toBeLessThan(0.90);
+      }
+      expect(geometry.poster.height / geometry.poster.width).toBeGreaterThan(1.55);
+      expect(geometry.poster.height / geometry.poster.width).toBeLessThan(1.75);
+      expect(geometry.poster.top - geometry.nav.bottom).toBeGreaterThan(8);
+      expect(geometry.poster.top - geometry.nav.bottom).toBeLessThan(40);
+      expect(geometry.leftArrow.right).toBeLessThanOrEqual(geometry.poster.left + 12);
+      expect(geometry.rightArrow.left).toBeGreaterThanOrEqual(geometry.poster.right - 12);
+      expect(geometry.leftArrow.right).toBeLessThanOrEqual(geometry.poster.left);
+      expect(geometry.rightArrow.left).toBeGreaterThanOrEqual(geometry.poster.right);
+
+      // There are exactly five logical posters; clones are implementation details for seamless looping.
+      expect(geometry.logicalPosterIds.sort()).toEqual(['1', '2', '3', '4', '5']);
+
+      if (viewport.width < 768) {
+        expect(geometry.header.height / viewport.height).toBeLessThan(0.18);
+        expect(geometry.logo.width / viewportWidth).toBeGreaterThan(0.35);
+      }
+
       await page.screenshot({
         path: `test-results/${viewport.name}.png`,
         fullPage: true,
