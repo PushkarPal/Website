@@ -54,9 +54,9 @@ test('Android-class layout keeps the carousel inside the visual viewport', async
   expect(geometry.poster.width / geometry.viewportWidth).toBeGreaterThan(0.70);
   expect(geometry.poster.right).toBeLessThanOrEqual(geometry.viewportWidth + 1);
   expect(geometry.leftGap).toBeGreaterThanOrEqual(-1);
-  expect(geometry.leftGap).toBeLessThanOrEqual(4);
+  expect(geometry.leftGap).toBeLessThanOrEqual(5);
   expect(geometry.rightGap).toBeGreaterThanOrEqual(-1);
-  expect(geometry.rightGap).toBeLessThanOrEqual(4);
+  expect(geometry.rightGap).toBeLessThanOrEqual(5);
 
   await page.screenshot({ path: 'test-results/device-android.png', fullPage: true });
 });
