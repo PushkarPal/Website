@@ -33,8 +33,7 @@ button {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* The app participates in normal document flow. No viewport-offset margins
-   or independent 100vw containing blocks are used for the mobile layout. */
+/* The page stays in normal document flow and occupies the viewport width. */
 .landing-page {
   width: 100%;
   max-width: none;
@@ -44,11 +43,12 @@ button {
   background: #ffffff;
 }
 
-/* Header */
+/* Header geometry is controlled by the logo's height so the real SVG cannot
+   overflow/clamp against a shorter header. */
 .landing-header {
   position: relative;
   width: 100%;
-  height: clamp(6.25rem, 26vw, 8rem);
+  height: clamp(6.75rem, 30vw, 8rem);
   display: grid;
   place-items: center;
   padding: clamp(0.5rem, 1.8vw, 0.8rem) clamp(0.75rem, 3vw, 1.5rem);
@@ -70,10 +70,10 @@ button {
 
 .landing-logo {
   display: block;
-  width: clamp(10.75rem, 52vw, 13.5rem);
-  max-width: 100%;
+  width: auto;
+  height: clamp(5.25rem, 26vw, 6.75rem);
+  max-width: 56vw;
   max-height: 100%;
-  height: auto;
   object-fit: contain;
 }
 
@@ -146,20 +146,18 @@ button {
 /* Poster carousel */
 .poster-section {
   width: 100%;
-  padding: clamp(1.1rem, 4vw, 1.75rem) clamp(0.4rem, 1.8vw, 1rem) clamp(1rem, 4vw, 2rem);
+  padding: clamp(1rem, 3.8vw, 1.75rem) clamp(0.35rem, 1.8vw, 1rem) clamp(1rem, 4vw, 2rem);
   background: #ffffff;
 }
 
-/* The shell is container-based: the arrows occupy only the side tracks and
-   the middle track receives the majority of the available width. */
 .carousel-shell {
   width: 100%;
   margin: 0;
   display: grid;
   grid-template-columns:
-    minmax(clamp(1.75rem, 5vw, 2.25rem), 0.45fr)
-    minmax(0, 4.1fr)
-    minmax(clamp(1.75rem, 5vw, 2.25rem), 0.45fr);
+    minmax(clamp(1.75rem, 5vw, 2.25rem), 0.4fr)
+    minmax(0, 5fr)
+    minmax(clamp(1.75rem, 5vw, 2.25rem), 0.4fr);
   align-items: center;
   column-gap: clamp(0.1rem, 0.6vw, 0.35rem);
 }
@@ -219,7 +217,11 @@ button {
 
 @media (orientation: landscape) and (max-height: 32rem) {
   .landing-header {
-    height: clamp(5rem, 18vw, 6.5rem);
+    height: clamp(5.25rem, 18vw, 6.5rem);
+  }
+
+  .landing-logo {
+    height: clamp(4.5rem, 22vw, 5.5rem);
   }
 
   .landing-nav a {
@@ -234,6 +236,13 @@ button {
 @media (min-width: 48rem) {
   .landing-header {
     height: clamp(7rem, 10vw, 8rem);
+    padding-inline: 1.25rem;
+  }
+
+  .landing-logo {
+    width: 13.5rem;
+    height: auto;
+    max-width: 100%;
   }
 
   .landing-nav {
