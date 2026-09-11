@@ -169,7 +169,8 @@ button {
   flex: 0 0 100%;
   min-width: 0;
   width: 100%;
-  aspect-ratio: 3 / 5;
+  /* 30% shorter than the original 3:5 poster, reducing only its height. */
+  aspect-ratio: 6 / 7;
   border: clamp(0.2rem, 0.9vw, 0.35rem) solid #ffffff;
   border-radius: clamp(1rem, 4vw, 1.5rem);
   background: #ffc400;
