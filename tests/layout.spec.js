@@ -183,12 +183,12 @@ test.describe('responsive landing page geometry', () => {
         expect(geometry.ratios.poster).toBeGreaterThan(0.72);
         expect(geometry.ratios.poster).toBeLessThan(0.90);
         expect(geometry.ratios.shell).toBeLessThanOrEqual(1);
-        expect(poster.height / poster.width).toBeGreaterThan(1.55);
-        expect(poster.height / poster.width).toBeLessThan(1.75);
+        expect(poster.height / poster.width).toBeGreaterThan(1.10);
+        expect(poster.height / poster.width).toBeLessThan(1.25);
       } else {
         expect(poster.width).toBeLessThanOrEqual(560 + widthTolerance);
-        expect(poster.height / poster.width).toBeGreaterThan(1.55);
-        expect(poster.height / poster.width).toBeLessThan(1.75);
+        expect(poster.height / poster.width).toBeGreaterThan(1.10);
+        expect(poster.height / poster.width).toBeLessThan(1.25);
       }
 
       expect(geometry.logicalPosterIds.sort()).toEqual(['1', '2', '3', '4', '5']);
