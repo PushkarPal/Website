@@ -25,26 +25,12 @@ button {
 }
 
 .landing-header {
-  position: relative;
   width: 100%;
   height: clamp(6.75rem, 30vw, 8rem);
   display: grid;
   place-items: center;
   padding: clamp(0.5rem, 1.8vw, 0.8rem) clamp(0.75rem, 3vw, 1.5rem);
   background: #ffffff;
-  overflow: hidden;
-}
-
-.landing-header::after,
-.landing-nav::after {
-  content: '';
-  position: absolute;
-  left: clamp(0.5rem, 2.5vw, 1.5rem);
-  right: clamp(0.5rem, 2.5vw, 1.5rem);
-  bottom: 0;
-  height: 0.125rem;
-  border-radius: 999px;
-  background: #ffc400;
 }
 
 .landing-logo {
@@ -56,8 +42,20 @@ button {
   object-fit: contain;
 }
 
+.category-area {
+  width: 100%;
+  background: #ffffff;
+}
+
+.category-line {
+  width: calc(100% - clamp(1rem, 5vw, 3rem));
+  height: 0.125rem;
+  margin-inline: auto;
+  border-radius: 999px;
+  background: #ffc400;
+}
+
 .landing-nav {
-  position: relative;
   width: 100%;
   padding: clamp(0.5rem, 2vw, 0.8rem) clamp(0.35rem, 1.8vw, 1.1rem) clamp(0.75rem, 2.8vw, 1.1rem);
   background: #ffffff;
@@ -192,16 +190,6 @@ button {
 
 .poster-arrow:active {
   transform: scale(0.9);
-}
-
-/* The poster itself keeps its size; this only moves the complete carousel
-   composition down by 30% of its own rendered height. */
-.poster-section {
-  --poster-shift: 30%;
-}
-
-.carousel-shell {
-  transform: translateY(var(--poster-shift));
 }
 
 @media (orientation: landscape) and (max-height: 32rem) {
