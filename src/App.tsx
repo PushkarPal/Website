@@ -101,7 +101,7 @@ function App() {
 
     const printDiagnostic = () => {
       const selectors = [
-        '#root', '.landing-page', '.landing-header', '.landing-logo', '.landing-nav',
+        '#root', '.landing-page', '.landing-header', '.landing-logo', '.category-area',
         '.category-row-five', '.category-separator', '.category-row-four', '.poster-section',
         '.carousel-shell', '.poster-arrow-left', '.poster-viewport', '.poster-track',
         '.poster-box', '.poster-arrow-right',
@@ -186,17 +186,23 @@ function App() {
         <img className="landing-logo" src={`${import.meta.env.BASE_URL}logo.svg`} alt="Biggies Burger" />
       </header>
 
-      <nav className="landing-nav" aria-label="Menu categories">
-        <div className="category-row category-row-five">
-          {firstRow.map((category) => <CategoryLink key={category.target} category={category} />)}
-        </div>
+      <section className="category-area" aria-label="Menu categories">
+        <div className="category-line" aria-hidden="true" />
 
-        <div className="category-separator" aria-hidden="true" />
+        <nav className="landing-nav">
+          <div className="category-row category-row-five">
+            {firstRow.map((category) => <CategoryLink key={category.target} category={category} />)}
+          </div>
 
-        <div className="category-row category-row-four">
-          {secondRow.map((category) => <CategoryLink key={category.target} category={category} />)}
-        </div>
-      </nav>
+          <div className="category-separator" aria-hidden="true" />
+
+          <div className="category-row category-row-four">
+            {secondRow.map((category) => <CategoryLink key={category.target} category={category} />)}
+          </div>
+        </nav>
+
+        <div className="category-line" aria-hidden="true" />
+      </section>
 
       <section className="poster-section" aria-label="Promotional posters">
         <div className="carousel-shell">
