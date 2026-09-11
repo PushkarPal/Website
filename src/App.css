@@ -194,9 +194,14 @@ button {
   transform: scale(0.9);
 }
 
-/* Move the complete category navigation down by 15% without changing its size. */
-.landing-nav {
-  transform: translateY(15%);
+/* The poster itself keeps its size; this only moves the complete carousel
+   composition down by 30% of its own rendered height. */
+.poster-section {
+  --poster-shift: 30%;
+}
+
+.carousel-shell {
+  transform: translateY(var(--poster-shift));
 }
 
 @media (orientation: landscape) and (max-height: 32rem) {
