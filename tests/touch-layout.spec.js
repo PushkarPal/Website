@@ -68,8 +68,8 @@ touchDesktopSiteCases.forEach(({ name, device }) => {
     expect(Math.abs(geometry.poster.left - (geometry.viewport.innerWidth - geometry.poster.width) / 2)).toBeLessThan(2);
     expect(geometry.leftArrow.right).toBeLessThanOrEqual(geometry.poster.left + 5);
     expect(geometry.rightArrow.left).toBeGreaterThanOrEqual(geometry.poster.right - 5);
-    expect(geometry.poster.height / geometry.poster.width).toBeGreaterThan(1.55);
-    expect(geometry.poster.height / geometry.poster.width).toBeLessThan(1.75);
+    expect(geometry.poster.height / geometry.poster.width).toBeGreaterThan(1.10);
+    expect(geometry.poster.height / geometry.poster.width).toBeLessThan(1.25);
 
     await page.screenshot({ path: `test-results/${name}.png`, fullPage: true });
     await context.close();
