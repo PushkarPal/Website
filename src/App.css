@@ -59,7 +59,7 @@ button {
 .landing-nav {
   position: relative;
   width: 100%;
-  padding: clamp(0.4rem, 1.8vw, 0.75rem) clamp(0.35rem, 1.8vw, 1.1rem) clamp(0.65rem, 2.6vw, 1rem);
+  padding: clamp(0.5rem, 2vw, 0.8rem) clamp(0.35rem, 1.8vw, 1.1rem) clamp(0.75rem, 2.8vw, 1.1rem);
   background: #ffffff;
 }
 
@@ -77,7 +77,7 @@ button {
 .category-separator {
   width: 100%;
   height: 0.125rem;
-  margin: clamp(0.45rem, 1.8vw, 0.75rem) 0;
+  margin: clamp(0.35rem, 1.5vw, 0.6rem) 0;
   border-radius: 999px;
   background: #ffc400;
 }
@@ -89,26 +89,26 @@ button {
 .landing-nav a {
   width: 100%;
   min-width: 0;
-  min-height: clamp(4.25rem, 16vw, 5.5rem);
+  min-height: clamp(4rem, 14vw, 5rem);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(0.35rem, 1.5vw, 0.6rem);
-  padding: clamp(0.25rem, 1vw, 0.5rem) clamp(0.05rem, 0.7vw, 0.35rem);
+  gap: clamp(0.4rem, 1.8vw, 0.65rem);
+  padding: clamp(0.2rem, 1vw, 0.45rem) clamp(0.05rem, 0.7vw, 0.35rem);
   color: #111111;
   text-decoration: none;
-  font-size: clamp(0.82rem, 3.6vw, 1rem);
+  font-size: clamp(0.8rem, 3.35vw, 0.98rem);
   font-weight: 600;
-  line-height: 1.12;
+  line-height: 1.1;
   text-align: center;
   white-space: normal;
   text-wrap: balance;
 }
 
 .category-icon {
-  width: clamp(2rem, 9vw, 2.45rem);
-  height: clamp(2rem, 9vw, 2.45rem);
+  width: clamp(2.3rem, 10vw, 2.8rem);
+  height: clamp(2.3rem, 10vw, 2.8rem);
   display: grid;
   place-items: center;
   flex: 0 0 auto;
@@ -123,24 +123,19 @@ button {
 
 .poster-section {
   width: 100%;
-  padding: clamp(1rem, 3.8vw, 1.75rem) clamp(0.35rem, 1.8vw, 1rem) clamp(1rem, 4vw, 2rem);
+  padding: clamp(1.25rem, 4.5vw, 2rem) clamp(0.35rem, 1.8vw, 1rem) clamp(1rem, 4vw, 2rem);
   background: #ffffff;
 }
 
-/*
- * Desktop keeps the bounded composition. Touch devices override this in
- * touch-carousel.css so a desktop-style mobile layout viewport cannot trigger
- * the desktop poster cap.
- */
 .carousel-shell {
   position: relative;
   width: min(100%, 40rem);
   max-width: 100%;
   margin-inline: auto;
   display: grid;
-  grid-template-columns: 2rem minmax(0, 35rem) 2rem;
+  grid-template-columns: clamp(1.8rem, 6vw, 2.5rem) minmax(0, 1fr) clamp(1.8rem, 6vw, 2.5rem);
   align-items: center;
-  column-gap: 0.25rem;
+  column-gap: clamp(0.15rem, 0.8vw, 0.35rem);
 }
 
 .poster-viewport {
@@ -169,7 +164,6 @@ button {
   flex: 0 0 100%;
   min-width: 0;
   width: 100%;
-  /* 30% shorter than the original 3:5 poster, reducing only its height. */
   aspect-ratio: 6 / 7;
   border: clamp(0.2rem, 0.9vw, 0.35rem) solid #ffffff;
   border-radius: clamp(1rem, 4vw, 1.5rem);
@@ -181,7 +175,7 @@ button {
 .poster-arrow {
   width: 100%;
   min-width: 0;
-  min-height: 3.5rem;
+  min-height: clamp(3.5rem, 15vw, 5rem);
   display: grid;
   place-items: center;
   margin: 0;
@@ -210,7 +204,7 @@ button {
   }
 
   .landing-nav a {
-    min-height: clamp(3.75rem, 12vw, 4.75rem);
+    min-height: clamp(3.5rem, 11vw, 4.5rem);
   }
 
   .poster-section {
