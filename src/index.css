@@ -1,21 +1,46 @@
-html {
+/* Mobile CSS foundation: the three invariants every page layout must obey. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
   width: 100%;
+  max-width: 100%;
   min-width: 0;
+}
+
+html {
   min-height: 100%;
   scroll-behavior: smooth;
   background: #ffffff;
 }
 
 body {
-  width: 100%;
-  min-width: 0;
   min-height: 100dvh;
   margin: 0;
   background: #ffffff;
+  overflow-x: clip;
+}
+
+/* Prevent replaced/content elements from becoming accidental overflow sources. */
+img,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+img,
+video,
+canvas {
+  height: auto;
 }
 
 #root {
-  width: 100%;
-  min-width: 0;
   min-height: 100dvh;
 }
