@@ -194,6 +194,16 @@ button {
   transform: scale(0.9);
 }
 
+/* The poster itself keeps its size; this only moves the complete carousel
+   composition down by 30% of its own rendered height. */
+.poster-section {
+  --poster-shift: 30%;
+}
+
+.carousel-shell {
+  transform: translateY(var(--poster-shift));
+}
+
 @media (orientation: landscape) and (max-height: 32rem) {
   .landing-header {
     height: clamp(5.25rem, 18vw, 6.5rem);
