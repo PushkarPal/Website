@@ -171,6 +171,13 @@ button {
   overflow: hidden;
 }
 
+/* Individual poster colors: change only these values when designing each poster. */
+.poster-1 { background: #ff595e; }
+.poster-2 { background: #1982c4; }
+.poster-3 { background: #8ac926; }
+.poster-4 { background: #ffca3a; }
+.poster-5 { background: #6a4c93; }
+
 .poster-arrow {
   width: 100%;
   min-width: 0;
