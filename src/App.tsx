@@ -216,7 +216,7 @@ function App() {
             >
               {carouselSlides.map((posterNumber, index) => (
                 <div
-                  className="poster-box"
+                  className={`poster-box poster-${posterNumber}`}
                   data-poster-number={posterNumber}
                   aria-hidden={index !== position}
                   key={`${posterNumber}-${index}`}
