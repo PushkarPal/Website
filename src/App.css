@@ -54,6 +54,7 @@ button {
   margin-inline: auto;
   border-radius: 999px;
   background: #ffc400;
+  transform: translateY(-20px);
 }
 
 .landing-nav {
