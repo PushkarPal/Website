@@ -98,10 +98,8 @@ button {
   min-width: 0;
   min-height: clamp(4rem, 14vw, 5rem);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(0.4rem, 1.8vw, 0.65rem);
   padding: clamp(0.2rem, 1vw, 0.45rem) clamp(0.05rem, 0.7vw, 0.35rem);
   color: #111111;
   text-decoration: none;
@@ -111,21 +109,6 @@ button {
   text-align: center;
   white-space: normal;
   text-wrap: balance;
-}
-
-.category-icon {
-  width: clamp(2.3rem, 10vw, 2.8rem);
-  height: clamp(2.3rem, 10vw, 2.8rem);
-  display: grid;
-  place-items: center;
-  flex: 0 0 auto;
-  line-height: 1;
-}
-
-.category-icon svg {
-  display: block;
-  width: 100%;
-  height: 100%;
 }
 
 .poster-section {
