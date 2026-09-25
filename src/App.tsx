@@ -27,9 +27,23 @@ const carouselSlides = [5, ...posters, 1]
 
 function CategoryLink({ category }: { category: Category }) {
   return (
-    <a href={`#${category.target}`}>
+    <a href={`?category=${category.target}`}>
       <span>{category.label}</span>
     </a>
+  )
+}
+
+function CategoryPage() {
+  if (category) {
+    return <CategoryPage />
+  }
+
+  return (
+    <div className="landing-page">
+      <header className="landing-header">
+        <img className="landing-logo" src={`${import.meta.env.BASE_URL}logo.svg`} alt="Biggies Burger" />
+      </header>
+    </div>
   )
 }
 
@@ -38,6 +52,7 @@ function App() {
   const [isTransitioning, setIsTransitioning] = useState(true)
   const touchStartX = useRef<number | null>(null)
   const autoplayTimer = useRef<number | null>(null)
+  const category = new URLSearchParams(window.location.search).get('category')
 
   const scheduleAutoplay = () => {
     if (autoplayTimer.current !== null) {
@@ -51,6 +66,8 @@ function App() {
   }
 
   useEffect(() => {
+    if (category) return
+
     scheduleAutoplay()
 
     return () => {
@@ -61,6 +78,7 @@ function App() {
   }, [])
 
   useEffect(() => {
+    if (category) return
     if (new URLSearchParams(window.location.search).get('layout-debug') !== '1') return
 
     const printDiagnostic = () => {
