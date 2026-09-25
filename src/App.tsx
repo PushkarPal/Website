@@ -169,6 +169,11 @@ function App() {
       </section>
 
       <section className="poster-section" aria-label="Promotional posters">
+        <div className="order-prompt" aria-label="Order prompt">
+          <div>Place your order</div>
+          <span>Destroy your hunger</span>
+        </div>
+
         <div className="carousel-shell">
           <button className="poster-arrow poster-arrow-left" onClick={previousPoster} aria-label="Previous poster">‹</button>
 
