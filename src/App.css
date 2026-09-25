@@ -127,7 +127,7 @@ button {
   width: 100%;
   text-align: center;
   color: #111111;
-  font-size: 28px;
+  font-size: 140px;
   font-weight: 700;
   line-height: 1.2;
   pointer-events: none;
@@ -136,7 +136,7 @@ button {
 .order-prompt span {
   display: block;
   margin-top: 6px;
-  font-size: 16px;
+  font-size: 80px;
   font-weight: 400;
 }
 
