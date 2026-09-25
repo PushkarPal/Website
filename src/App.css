@@ -131,6 +131,7 @@ button {
   font-weight: 700;
   line-height: 1.2;
   pointer-events: none;
+  font-family: Georgia, 'Times New Roman', serif;
 }
 
 .order-prompt span {
