@@ -34,10 +34,6 @@ function CategoryLink({ category }: { category: Category }) {
 }
 
 function CategoryPage() {
-  if (category) {
-    return <CategoryPage />
-  }
-
   return (
     <div className="landing-page">
       <header className="landing-header">
@@ -160,6 +156,10 @@ function App() {
     if (Math.abs(distance) < 45) return
     if (distance < 0) nextPoster()
     else previousPoster()
+  }
+
+  if (category) {
+    return <CategoryPage />
   }
 
   return (
