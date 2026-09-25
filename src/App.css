@@ -40,7 +40,7 @@ button {
   max-width: 56vw;
   max-height: 100%;
   object-fit: contain;
-  transform: scale(1.2) translateY(20px);
+  transform: scale(1.2) translateY(30px);
 }
 
 .category-area {
