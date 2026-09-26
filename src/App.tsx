@@ -70,7 +70,7 @@ function CategoryContent({ category }: { category: string | null }) {
   })).filter((section) => section.items.length > 0)
 
   return (
-    <section className="category-menu" aria-live="polite" aria-label={selected ? \`\${selected.label} menu\` : 'Selected menu'}>
+    <section className="category-menu" aria-live="polite" aria-label={selected ? `${selected.label} menu` : 'Selected menu'}>
       {sections.map((section) => (
         <section className="menu-section" key={section.name}>
           <h2>{section.name}</h2>
@@ -78,7 +78,7 @@ function CategoryContent({ category }: { category: string | null }) {
           <div className="menu-list">
             {section.items.flatMap((item) =>
               item.variants.map((variant) => (
-                <article className="menu-item" key={\`\${item.id}-\${variant.name}\`}>
+                <article className="menu-item" key={`${item.id}-${variant.name}`}>
                   <div className="menu-item-info">
                     <h3>{item.name}</h3>
                     <span className="menu-item-variant">{variant.name}</span>
@@ -89,7 +89,7 @@ function CategoryContent({ category }: { category: string | null }) {
                   <button
                     type="button"
                     className="menu-item-add"
-                    aria-label={\`Add \${item.name} \${variant.name}\`}
+                    aria-label={`Add ${item.name} ${variant.name}`}
                   >
                     +
                   </button>
