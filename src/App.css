@@ -126,18 +126,97 @@ button {
   border-radius: 0.75rem;
 }
 
-.category-content {
+.category-menu {
   width: 100%;
-  padding: 1rem clamp(0.75rem, 4vw, 1.5rem);
+  padding: 1rem clamp(0.75rem, 4vw, 1.5rem) 2rem;
   background: #ffffff;
 }
 
-.category-content h2 {
-  margin: 0;
+.menu-section {
+  width: 100%;
+}
+
+.menu-section + .menu-section {
+  margin-top: 1.5rem;
+}
+
+.menu-section h2 {
+  margin: 0 0 0.75rem;
   color: #111111;
-  font-size: clamp(1.5rem, 6vw, 2.25rem);
+  font-size: clamp(1.35rem, 5vw, 2rem);
   line-height: 1.1;
   font-weight: 700;
+}
+
+.menu-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+.menu-item {
+  width: 100%;
+  min-width: 0;
+  min-height: 4.25rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border: 0.0625rem solid #eeeeee;
+  border-radius: 0.875rem;
+  background: #ffffff;
+  box-shadow: 0 0.0625rem 0 rgba(0, 0, 0, 0.06);
+}
+
+.menu-item-info {
+  min-width: 0;
+}
+
+.menu-item-info h3 {
+  margin: 0;
+  color: #111111;
+  font-size: clamp(1rem, 4vw, 1.25rem);
+  line-height: 1.2;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.menu-item-variant {
+  display: block;
+  margin-top: 0.2rem;
+  color: #555555;
+  font-size: clamp(0.8rem, 3.2vw, 1rem);
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.menu-item-price {
+  white-space: nowrap;
+  color: #111111;
+  font-size: clamp(0.95rem, 3.8vw, 1.15rem);
+  font-weight: 700;
+}
+
+.menu-item-add {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border: 0.125rem solid #ffc400;
+  border-radius: 0.75rem;
+  background: #ffffff;
+  color: #111111;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.menu-item-add:active {
+  transform: scale(0.95);
 }
 
 .poster-section {
