@@ -86,7 +86,8 @@ button {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-.landing-nav a {
+.landing-nav a,
+.landing-nav button {
   width: 100%;
   min-width: 0;
   min-height: clamp(4rem, 14vw, 5rem);
@@ -106,11 +107,37 @@ button {
   text-wrap: balance;
 }
 
-.landing-nav a span {
+.landing-nav a span,
+.landing-nav button span {
   display: block;
   max-width: 100%;
   min-width: 0;
   overflow-wrap: anywhere;
+}
+
+.landing-nav button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.landing-nav button.is-selected {
+  border: 0.125rem solid #ffc400;
+  border-radius: 0.75rem;
+}
+
+.category-content {
+  width: 100%;
+  padding: 1rem clamp(0.75rem, 4vw, 1.5rem);
+  background: #ffffff;
+}
+
+.category-content h2 {
+  margin: 0;
+  color: #111111;
+  font-size: clamp(1.5rem, 6vw, 2.25rem);
+  line-height: 1.1;
+  font-weight: 700;
 }
 
 .poster-section {
@@ -233,7 +260,8 @@ button {
     height: clamp(4.5rem, 22vw, 5.5rem);
   }
 
-  .landing-nav a {
+  .landing-nav a,
+.landing-nav button {
     min-height: clamp(3.5rem, 11vw, 4.5rem);
   }
 
