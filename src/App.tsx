@@ -25,30 +25,45 @@ const secondRow: Category[] = [
 const posters = [1, 2, 3, 4, 5]
 const carouselSlides = [5, ...posters, 1]
 
-function CategoryLink({ category }: { category: Category }) {
+function CategoryLink({
+  category,
+  selected,
+  onSelect,
+}: {
+  category: Category
+  selected: boolean
+  onSelect: (target: string) => void
+}) {
   return (
-    <a href={`?category=${category.target}`}>
+    <button
+      type="button"
+      className={selected ? 'is-selected' : ''}
+      aria-pressed={selected}
+      onClick={() => onSelect(category.target)}
+    >
       <span>{category.label}</span>
-    </a>
+    </button>
   )
 }
 
-function CategoryPage() {
+function CategoryContent({ category }: { category: string | null }) {
+  if (!category) return null
+
+  const label = [...firstRow, ...secondRow].find((item) => item.target === category)?.label
+
   return (
-    <div className="landing-page">
-      <header className="landing-header">
-        <img className="landing-logo" src={`${import.meta.env.BASE_URL}logo.svg`} alt="Biggies Burger" />
-      </header>
-    </div>
+    <section className="category-content" aria-live="polite" aria-label={label ? `${label} menu` : 'Selected menu'}>
+      <h2>{label ?? 'Selected category'}</h2>
+    </section>
   )
 }
 
 function App() {
   const [position, setPosition] = useState(1)
   const [isTransitioning, setIsTransitioning] = useState(true)
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const touchStartX = useRef<number | null>(null)
   const autoplayTimer = useRef<number | null>(null)
-  const category = new URLSearchParams(window.location.search).get('category')
 
   const scheduleAutoplay = () => {
     if (autoplayTimer.current !== null) {
@@ -62,8 +77,6 @@ function App() {
   }
 
   useEffect(() => {
-    if (category) return
-
     scheduleAutoplay()
 
     return () => {
@@ -74,7 +87,6 @@ function App() {
   }, [])
 
   useEffect(() => {
-    if (category) return
     if (new URLSearchParams(window.location.search).get('layout-debug') !== '1') return
 
     const printDiagnostic = () => {
@@ -158,10 +170,6 @@ function App() {
     else previousPoster()
   }
 
-  if (category) {
-    return <CategoryPage />
-  }
-
   return (
     <div className="landing-page">
       <header className="landing-header">
@@ -173,18 +181,34 @@ function App() {
 
         <nav className="landing-nav">
           <div className="category-row category-row-five">
-            {firstRow.map((category) => <CategoryLink key={category.target} category={category} />)}
+            {firstRow.map((category) => (
+              <CategoryLink
+                key={category.target}
+                category={category}
+                selected={selectedCategory === category.target}
+                onSelect={setSelectedCategory}
+              />
+            ))}
           </div>
 
           <div className="category-separator" aria-hidden="true" />
 
           <div className="category-row category-row-four">
-            {secondRow.map((category) => <CategoryLink key={category.target} category={category} />)}
+            {secondRow.map((category) => (
+              <CategoryLink
+                key={category.target}
+                category={category}
+                selected={selectedCategory === category.target}
+                onSelect={setSelectedCategory}
+              />
+            ))}
           </div>
         </nav>
 
         <div className="category-line" aria-hidden="true" />
       </section>
+
+      <CategoryContent category={selectedCategory} />
 
       <section className="poster-section" aria-label="Promotional posters">
         <div className="order-prompt" aria-label="Order prompt">
