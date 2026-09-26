@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { TouchEvent } from 'react'
+import { menuItems } from './data/menu'
 import './App.css'
 
 type Category = {
@@ -46,14 +47,58 @@ function CategoryLink({
   )
 }
 
+const categoryMenuMap: Record<string, string[]> = {
+  'menu-burger': ['Value Burgers', 'Beamer', 'The Original', 'Bigg Krunch', 'Classic Burgers'],
+  'menu-wrap': ['Bigg Wraps'],
+  'menu-wings': ['Wings'],
+  'menu-fries': ['Fries'],
+  'menu-rice': ['Rice Bowls'],
+  'menu-quick': ['Quick Bites'],
+  'menu-shakes': ['Thick Shakes'],
+  'menu-dessert': ['Desserts'],
+  'menu-beverages': ['Beverages'],
+}
+
 function CategoryContent({ category }: { category: string | null }) {
   if (!category) return null
 
-  const label = [...firstRow, ...secondRow].find((item) => item.target === category)?.label
+  const selected = [...firstRow, ...secondRow].find((item) => item.target === category)
+  const sectionNames = categoryMenuMap[category] ?? []
+  const sections = sectionNames.map((sectionName) => ({
+    name: sectionName,
+    items: menuItems.filter((item) => item.category === sectionName),
+  })).filter((section) => section.items.length > 0)
 
   return (
-    <section className="category-content" aria-live="polite" aria-label={label ? `${label} menu` : 'Selected menu'}>
-      <h2>{label ?? 'Selected category'}</h2>
+    <section className="category-menu" aria-live="polite" aria-label={selected ? \`\${selected.label} menu\` : 'Selected menu'}>
+      {sections.map((section) => (
+        <section className="menu-section" key={section.name}>
+          <h2>{section.name}</h2>
+
+          <div className="menu-list">
+            {section.items.flatMap((item) =>
+              item.variants.map((variant) => (
+                <article className="menu-item" key={\`\${item.id}-\${variant.name}\`}>
+                  <div className="menu-item-info">
+                    <h3>{item.name}</h3>
+                    <span className="menu-item-variant">{variant.name}</span>
+                  </div>
+
+                  <span className="menu-item-price">₹{variant.price}</span>
+
+                  <button
+                    type="button"
+                    className="menu-item-add"
+                    aria-label={\`Add \${item.name} \${variant.name}\`}
+                  >
+                    +
+                  </button>
+                </article>
+              )),
+            )}
+          </div>
+        </section>
+      ))}
     </section>
   )
 }
@@ -208,8 +253,9 @@ function App() {
         <div className="category-line" aria-hidden="true" />
       </section>
 
-      <CategoryContent category={selectedCategory} />
-
+      {selectedCategory ? (
+        <CategoryContent category={selectedCategory} />
+      ) : (
       <section className="poster-section" aria-label="Promotional posters">
         <div className="order-prompt" aria-label="Order prompt">
           <div>Place your order</div>
@@ -239,6 +285,8 @@ function App() {
           <button className="poster-arrow poster-arrow-right" onClick={nextPoster} aria-label="Next poster">›</button>
         </div>
       </section>
+
+      )}
     </div>
   )
 }
